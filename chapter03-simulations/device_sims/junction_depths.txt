@@ -1,0 +1,17 @@
+Junction depths extracted from svisual cutline CSV exports
+(zero-crossing of NetActive in silicon region, post first oxide pixel)
+======================================================================
+Device  Dose    Cut         x_j (μm)    peak (cm-3)   
+----------------------------------------------------------------------
+NMOS    3e11    channel     n/a                       
+NMOS    3e11    source      0.537       1.83e+20      
+NMOS    6e11    channel     n/a                       
+NMOS    6e11    source      0.537       1.83e+20      
+NMOS    9e11    channel     n/a                       
+NMOS    9e11    source      0.537       1.83e+20      
+PMOS    3e11    channel     2.085                     
+PMOS    3e11    source      0.594       -1.47e+18     
+PMOS    6e11    channel     2.085                     
+PMOS    6e11    source      0.594       -1.47e+18     
+PMOS    9e11    channel     2.085                     
+PMOS    9e11    source      0.594       -1.47e+18     

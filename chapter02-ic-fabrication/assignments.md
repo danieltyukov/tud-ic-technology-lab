@@ -145,9 +145,9 @@ $$\boxed{\,x_j \approx 0.186~\mu\text{m}\,}$$
 
 | Implant | $N_p$ ($\text{cm}^{-3}$) | $x_j$ theory ($\mu\text{m}$) | $x_j$ Sentaurus (Ch. 3) | Measured (Ch. 4 / 6) |
 |---|---|---|---|---|
-| NW (P + drive-in) | $3.0 \times 10^{16}$ | $\approx 2.4$ | _to fill_ | _to fill_ |
-| SN (As) | $1.75 \times 10^{21}$ | $\approx 0.087$ | _to fill_ | _to fill_ |
-| SP (B in NW) | $5.39 \times 10^{19}$ | $\approx 0.186$ | _to fill_ | _to fill_ |
+| NW (P + drive-in) | $3.0 \times 10^{16}$ | $\approx 2.4$ | **2.085** | _to fill_ |
+| SN (As) | $1.75 \times 10^{21}$ | $\approx 0.087$ | **0.537** | _to fill_ |
+| SP (B in NW) | $5.39 \times 10^{19}$ | $\approx 0.186$ | **0.594** | _to fill_ |
 
 The empty cells are deliberate — they get filled in as the simulation work in Chapter 3 and the PCM measurements in Chapters 4 and 6 come back. Any large discrepancy is the thing the final report should explain (solid-solubility clipping, channelling, lateral diffusion, sheet-resistance assumptions, etc.).
 
