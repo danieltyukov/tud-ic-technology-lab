@@ -200,35 +200,68 @@ sweep_rows.append(("NMOS", 9e11, 0.0, vt_table_nmos[0][1] if vt_table_nmos else 
 sweep_rows.append(("NMOS", 9e11, -1.0, vt_table_nmos[1][1] if len(vt_table_nmos) > 1 else None))
 sweep_rows.append(("NMOS", 9e11, -2.0, vt_table_nmos[2][1] if len(vt_table_nmos) > 2 else None))
 sweep_rows.append(("PMOS", 9e11, 0.0, vt_table_pmos[0][1] if vt_table_pmos else None))
-# Variant PLTs
+# Variant PLTs — now also harvest V_sub = -1, -2 cases (the sed in run_vtadj_sweep.sh
+# accidentally enabled the multi-bias branch for 3e11/6e11 as well — bonus data!)
 for dose_str, dose_val in [("3e11", 3e11), ("6e11", 6e11)]:
     for dev in ["NMOS", "PMOS"]:
-        for f in DATA.glob(f"*_{dev}_{dose_str}_*subBias_0*.plt"):
+        for f in sorted(DATA.glob(f"*_{dev}_{dose_str}_IdVg_subBias_*current_des.plt")):
+            m = re.search(r"subBias_(-?\d+)_", f.name)
+            if not m:
+                continue
+            vsub = float(m.group(1))
             arr, layout = parse_plt(f.name)
             vg, id_drain = gate_drain(arr, layout)
             vt_c = vt_extract(vg, id_drain, "constant")
-            sweep_rows.append((dev, dose_val, 0.0, vt_c))
-            print(f"Sweep: {dev} @ {dose_str} V_sub=0  →  V_T = {vt_c:.3f} V")
+            sweep_rows.append((dev, dose_val, vsub, vt_c))
+            print(f"Sweep: {dev} @ {dose_str} V_sub={vsub:+.0f}V  →  V_T = {vt_c:.3f} V")
 
 # Plot V_T vs dose (V_sub=0 only)
 if any(r[1] != 9e11 for r in sweep_rows):
-    fig, ax = plt.subplots(figsize=(7, 5))
+    fig, ax = plt.subplots(figsize=(8, 5))
     for dev, marker, color in [("NMOS", "o", "C0"), ("PMOS", "s", "C3")]:
         pts = sorted([(r[1], r[3]) for r in sweep_rows if r[0] == dev and r[2] == 0.0 and r[3] is not None])
         if pts:
             doses, vts = zip(*pts)
-            ax.plot(doses, vts, marker=marker, color=color, ls="-", label=dev)
+            ax.plot(doses, vts, marker=marker, color=color, ls="-", markersize=10, lw=2, label=dev)
+            for d, v in zip(doses, vts):
+                ax.annotate(f"{v:+.2f} V", (d, v), textcoords="offset points",
+                            xytext=(8, -4 if dev == "PMOS" else 8), fontsize=9, color=color)
     ax.set_xscale("log")
-    ax.set_xlabel("V_T-adjust dose [cm⁻²]")
-    ax.set_ylabel("V_T [V]")
+    ax.set_xlabel("V_T-adjust boron dose (cm⁻²)")
+    ax.set_ylabel("V_T (V)")
     ax.set_title("Steps 9–11: V_T vs V_T-adjust dose (V_sub = 0)")
     ax.axhline(0, color="grey", ls=":", alpha=0.5)
     ax.grid(True, ls="--", alpha=0.4)
-    ax.legend()
+    ax.legend(loc="center right")
     fig.tight_layout()
     fig.savefig(PLOTS / "step11_VT_vs_dose.png", dpi=140)
     plt.close(fig)
     print("Step 11: V_T vs dose plotted")
+
+# Plot per-dose NMOS IdVg families (body effect at each dose)
+for dose_str, dose_val in [("3e11", 3e11), ("6e11", 6e11)]:
+    files = sorted(DATA.glob(f"*_NMOS_{dose_str}_IdVg_subBias_*current_des.plt"))
+    if not files:
+        continue
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for f in files:
+        m = re.search(r"subBias_(-?\d+)_", f.name)
+        vsub = float(m.group(1)) if m else 0
+        arr, layout = parse_plt(f.name)
+        vg, id_drain = gate_drain(arr, layout)
+        vt_c = vt_extract(vg, id_drain, "constant")
+        ax.semilogy(vg, np.abs(id_drain), label=f"V_sub = {vsub:+.0f} V (V_T ≈ {vt_c:.2f} V)")
+    ax.axhline(1e-7, color="grey", ls=":", alpha=0.6, label="100 nA threshold")
+    ax.set_xlabel("V_G (V)")
+    ax.set_ylabel("|I_D| (A)")
+    ax.set_title(f"NMOS I_D–V_G @ V_T-adjust = {dose_str} (body-effect family)")
+    ax.grid(True, which="both", ls="--", alpha=0.3)
+    ax.legend(fontsize=9, loc="best")
+    ax.set_ylim(1e-13, 1e-3)
+    fig.tight_layout()
+    fig.savefig(PLOTS / f"step10_NMOS_IdVg_{dose_str}.png", dpi=140)
+    plt.close(fig)
+    print(f"Step 10: NMOS IdVg @ {dose_str} (3 V_sub) plotted")
 
 
 # ---------- Save V_T table ----------
