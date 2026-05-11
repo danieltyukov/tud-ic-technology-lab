@@ -1,0 +1,58 @@
+=== amorf.cmd ===
+  implant: implant Arsenic 	dose=1e15  	energy=148 sentaurus.mc particles=20000 info=1
+  implant: implant Antimony 	dose=1e15	energy=200 sentaurus.mc particles=20000 info=1
+  implant: implant Boron 		dose=1e15 	energy=24 sentaurus.mc particles=20000 info=1
+  implant: implant Phosphorus	dose=1e15 	energy=68 sentaurus.mc particles=20000 info=1
+=== channelP.cmd ===
+  implant: implant Phosphorus dose=1e15 energy=40 tilt=7 rotation=270
+=== channelP_T0.cmd ===
+  implant: implant Phosphorus dose=1e15 energy=40 tilt=0 rotation=270
+=== channelP_T11.cmd ===
+  implant: implant Phosphorus dose=1e15 energy=40 tilt=11 rotation=270
+=== channelP_T15.cmd ===
+  implant: implant Phosphorus dose=1e15 energy=40 tilt=15 rotation=270
+=== channelP_T3.cmd ===
+  implant: implant Phosphorus dose=1e15 energy=40 tilt=3 rotation=270
+=== channelP_T7.cmd ===
+  implant: implant Phosphorus dose=1e15 energy=40 tilt=7 rotation=270
+=== diffamorf.cmd ===
+  implant: implant Arsenic 	dose=1e15  	energy=148 sentaurus.mc particles=20000 info=1
+  implant: implant Antimony 	dose=1e15	  energy=200 sentaurus.mc particles=20000 info=1
+  implant: implant Boron 		dose=1e15 	energy=24 sentaurus.mc particles=20000 info=1
+  implant: implant Phosphorus	dose=1e15 	energy=68 sentaurus.mc particles=20000 info=1
+  diffuse: diffuse time=300<min> temperature=1000<C>
+=== diffcryst.cmd ===
+  implant: implant Arsenic 	dose=1e15  	energy=148
+  implant: implant Antimony 	dose=1e15	energy=200
+  implant: implant Boron 		dose=1e15 	energy=28
+  implant: implant Phosphorus dose=1e15 energy=68
+  diffuse: diffuse time=300<min> temperature=1000<C>
+=== imp-sb-low.cmd ===
+  implant: implant Antimony 	dose=1e14	energy=200
+  diffuse: diffuse time=60<min> temperature=1000<C>
+=== imp-sb.cmd ===
+  implant: implant Antimony 	dose=1e15	energy=200
+  diffuse: diffuse time=60<min> temperature=1000<C>
+=== implant-As.cmd ===
+  implant: implant Arsenic 	dose=1e15  	energy=148
+=== implant-B.cmd ===
+  implant: implant Boron 		dose=1e15 	energy=24
+=== implant-P.cmd ===
+  implant: implant Phosphorus dose=1e15 energy=63
+=== implant-Sb.cmd ===
+  implant: implant Antimony 	dose=1e15	energy=200
+=== nitride.cmd ===
+  deposit: deposit nitride thickness=400<nm>
+  implant: implant Phosphorus dose=1e15 energy=160
+=== oxide.cmd ===
+  deposit: deposit oxide thickness=400<nm>
+  implant: implant Phosphorus dose=1e15 energy=160
+=== resist-1um.cmd ===
+  deposit: deposit resist thickness=1000<nm>
+  implant: implant Phosphorus dose=1e15 energy=160
+=== resist.cmd ===
+  deposit: deposit resist thickness=400<nm>
+  implant: implant Phosphorus dose=1e15 energy=160
+=== wetoxide.cmd ===
+  implant: implant Arsenic dose=5e15 energy=40 tilt=7 rotation=22
+  diffuse: diffuse temp.ramp= gateoxide

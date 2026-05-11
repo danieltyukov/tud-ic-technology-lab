@@ -1,3 +1,9 @@
+# Credentials — never commit
+.credentials/
+*.credentials.txt
+credentials.txt
+secrets.txt
+
 # OS
 .DS_Store
 Thumbs.db
