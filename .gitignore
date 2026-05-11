@@ -33,6 +33,10 @@ venv/
 *.bbl
 *.blg
 
+# but Sentaurus .out CSVs in simulation directories are kept
+!chapter*/sim_data/*.out
+!chapter*/*sim*/*.out
+
 # Sentaurus simulation outputs we don't need in git
 *.tdr
 *.plt
