@@ -151,9 +151,9 @@ V_T extracted by constant-current method at $|I_D| = 100$ nA, V_sub = 0:
 
 | V_T-adjust dose | NMOS V_T (V) | PMOS V_T (V) |
 |---|---|---|
-| 3×10¹¹ | **0.905** | _pending sweep_ |
-| 6×10¹¹ | **1.162** | _pending sweep_ |
-| 9×10¹¹ (baseline) | **1.385** | **−3.91** |
+| 3×10¹¹ | **0.905** | **−4.372** |
+| 6×10¹¹ | **1.162** | _pending PMOS@6e11_ |
+| 9×10¹¹ (baseline) | **1.385** | **−3.907** |
 
 ![V_T vs dose](device_sims/plots/step11_VT_vs_dose.png)
 
