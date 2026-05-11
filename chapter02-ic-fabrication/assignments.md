@@ -70,7 +70,7 @@ Note: the marker is a recess, not a bump. The window region ate up silicon twice
 
 Two reasons:
 
-1. Quality. Dry SiO$_2$ has fewer defects and a cleaner Si/SiO$_2$ interface. Wet oxide pulls in OH groups that show up as interface traps and oxide charge. Both push V$_T$ around and hurt channel mobility, which is exactly what the gate oxide is supposed to be precise about.
+1. Quality. Dry $\text{SiO}_2$ has fewer defects and a cleaner Si/$\text{SiO}_2$ interface. Wet oxide pulls in OH groups that show up as interface traps and oxide charge. Both push $V_T$ around and hurt channel mobility, which is exactly what the gate oxide is supposed to be precise about.
 2. Control. Wet oxidation is roughly an order of magnitude faster. For a 100 nm target film, dry growth lands more reliably on thickness without overshoot.
 
 Dopant diffusion happens in both cases, but the gate-oxide anneal stays at 1000 °C and the timescale is short enough that the SN/SP profiles don't smear out much.
@@ -137,7 +137,7 @@ $$\boxed{\,x_j \approx 0.186~\mu\text{m}\,}$$
 
 ### Quick summary
 
-| Implant | $N_p$ (cm$^{-3}$) | $x_j$ ($\mu$m) |
+| Implant | $N_p$ ($\text{cm}^{-3}$) | $x_j$ ($\mu\text{m}$) |
 |---|---|---|
 | NW (P + drive-in) | $3.0 \times 10^{16}$ | $\approx 2.4$ |
 | SN (As) | $1.75 \times 10^{21}$ | $\approx 0.087$ |
@@ -156,8 +156,8 @@ Matching the five PMOS top-views in the figure to that order:
 | Process step | Mask | Figure |
 |---|---|---|
 | 1 | NW — N-well (large pink fill) | 3 |
-| 2 | SN — N$^+$ source/drain (open outline on PMOS, not really applied here) | 5 |
-| 3 | SP — P$^+$ source/drain stripes inside the well | 4 |
+| 2 | SN — $N^+$ source/drain (open outline on PMOS, not really applied here) | 5 |
+| 3 | SP — $P^+$ source/drain stripes inside the well | 4 |
 | 4 | CO — contact openings (small marks on source/drain) | 2 |
 | 5 | IC — interconnect / metal (SU, G, S, D wired up) | 1 |
 
@@ -165,9 +165,9 @@ Reading order of the figures: **3 → 5 → 4 → 2 → 1.**
 
 ---
 
-## Assignment 5: V$_T$-adjust
+## Assignment 5: Vₜ-adjust
 
-### V$_T$ equations
+### Vₜ equations
 
 For an NMOS (p-type body, channel acceptor concentration $N_A$):
 
@@ -179,22 +179,22 @@ $$V_{T,p} = V_{FB} - 2 |\phi_F| - \frac{\sqrt{2 \varepsilon_{Si} q N_D (2 |\phi_
 
 ### Why a single boron implant works for both devices
 
-The V$_T$-adjust step puts a shallow boron sheet near the surface in *every* channel — both NMOS and PMOS, because no mask is used. Boron is an acceptor, so the dose $N_I$ (atoms/cm$^2$) shows up as a fixed extra negative charge inside the depletion region. To first order it shifts V$_T$ by:
+The $V_T$-adjust step puts a shallow boron sheet near the surface in *every* channel — both NMOS and PMOS, because no mask is used. Boron is an acceptor, so the dose $N_I$ ($\text{atoms/cm}^2$) shows up as a fixed extra negative charge inside the depletion region. To first order it shifts $V_T$ by:
 
 $$\Delta V_T = + \frac{q N_I}{C_{ox}}$$
 
 The shift is **positive for both devices**, regardless of what's already in the channel:
 
-- NMOS channel is p-type. Adding more acceptors makes the channel even more p-type and pushes V$_T$ higher. Good — without this, the NMOS V$_T$ in BICMOS5 sits too low.
-- PMOS channel is n-type (the well). Boron partially compensates the donors, reducing $|N_D - N_I|$ in the surface region, which pulls V$_T$ towards zero (less negative). Also good — without this, the PMOS V$_T$ would be too negative.
+- NMOS channel is p-type. Adding more acceptors makes the channel even more p-type and pushes $V_T$ higher. Good — without this, the NMOS $V_T$ in BICMOS5 sits too low.
+- PMOS channel is n-type (the well). Boron partially compensates the donors, reducing $|N_D - N_I|$ in the surface region, which pulls $V_T$ towards zero (less negative). Also good — without this, the PMOS $V_T$ would be too negative.
 
-So the same implant fixes both at once. That's why the four-quadrant test wafer (Figure 2-15) sweeps boron dose: 0, $3\times10^{11}$, $6\times10^{11}$, $9\times10^{11}$ ions/cm$^2$ — to find the dose that lands both V$_T$ values where the spec wants them.
+So the same implant fixes both at once. That's why the four-quadrant test wafer (Figure 2-15) sweeps boron dose: 0, $3 \times 10^{11}$, $6 \times 10^{11}$, $9 \times 10^{11}$ $\text{ions/cm}^2$ — to find the dose that lands both $V_T$ values where the spec wants them.
 
-### Effect of increasing the V$_T$-adjust dose
+### Effect of increasing the Vₜ-adjust dose
 
-| Device | V$_T$ shift | What it means |
+| Device | $V_T$-shift | What it means |
 |---|---|---|
 | NMOS | more positive | threshold magnitude increases — harder to turn on |
 | PMOS | less negative (closer to zero) | threshold magnitude decreases — easier to turn on |
 
-Both V$_T$ values move in the same direction (positive on the number line). The magnitudes move in opposite directions, which is the trick that makes a single implant useful for a CMOS process.
+Both $V_T$ values move in the same direction (positive on the number line). The magnitudes move in opposite directions, which is the trick that makes a single implant useful for a CMOS process.
