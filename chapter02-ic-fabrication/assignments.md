@@ -79,6 +79,12 @@ Dopant diffusion happens in both cases, but the gate-oxide anneal stays at 1000 
 
 ## Assignment 3: Implantation and diffusion — junction depths
 
+> **Forward reference (per manual, p. 15):** the junction depths calculated here will be used to:
+> - **compare against the Sentaurus simulations in Chapter 3** (process simulation will give a real doping profile; check whether the analytical Gaussian/limited-source estimate agrees), and
+> - **interpret the electrical measurements in Chapters 4 and 6** (PCM measurements like sheet resistance and capacitance only make sense if you know roughly where the junction is).
+>
+> Keep the summary table at the end of this assignment handy — those three $x_j$ numbers are the ones we'll cite when comparing theory ↔ simulation ↔ measurement in the final report.
+
 Three implants form the n/p regions. The junction sits where the implant concentration crosses the background doping.
 
 ### a) N-Well (P implant + 4 hr drive-in at 1150 °C)
@@ -135,15 +141,15 @@ $$x_j - R_p = \Delta R_p \sqrt{2 \ln(N_p / N_D)} = 0.0296 \cdot \sqrt{2 \ln(2697
 
 $$\boxed{\,x_j \approx 0.186~\mu\text{m}\,}$$
 
-### Quick summary
+### Quick summary — reference table for later chapters
 
-| Implant | $N_p$ ($\text{cm}^{-3}$) | $x_j$ ($\mu\text{m}$) |
-|---|---|---|
-| NW (P + drive-in) | $3.0 \times 10^{16}$ | $\approx 2.4$ |
-| SN (As) | $1.75 \times 10^{21}$ | $\approx 0.087$ |
-| SP (B in NW) | $5.39 \times 10^{19}$ | $\approx 0.186$ |
+| Implant | $N_p$ ($\text{cm}^{-3}$) | $x_j$ theory ($\mu\text{m}$) | $x_j$ Sentaurus (Ch. 3) | Measured (Ch. 4 / 6) |
+|---|---|---|---|---|
+| NW (P + drive-in) | $3.0 \times 10^{16}$ | $\approx 2.4$ | _to fill_ | _to fill_ |
+| SN (As) | $1.75 \times 10^{21}$ | $\approx 0.087$ | _to fill_ | _to fill_ |
+| SP (B in NW) | $5.39 \times 10^{19}$ | $\approx 0.186$ | _to fill_ | _to fill_ |
 
-These are the values to compare against the Sentaurus simulations in Chapter 3.
+The empty cells are deliberate — they get filled in as the simulation work in Chapter 3 and the PCM measurements in Chapters 4 and 6 come back. Any large discrepancy is the thing the final report should explain (solid-solubility clipping, channelling, lateral diffusion, sheet-resistance assumptions, etc.).
 
 ---
 
