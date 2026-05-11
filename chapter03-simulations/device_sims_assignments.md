@@ -151,9 +151,9 @@ V_T extracted by constant-current method at $|I_D| = 100$ nA, V_sub = 0:
 
 | V_T-adjust dose | NMOS V_T (V) | PMOS V_T (V) |
 |---|---|---|
-| 3×10¹¹ | **0.905** | (pending sweep) |
-| 6×10¹¹ | (just finished, pulling) | (pending sweep) |
-| 9×10¹¹ (baseline) | 1.385 | −3.91 |
+| 3×10¹¹ | **0.905** | _pending sweep_ |
+| 6×10¹¹ | **1.162** | _pending sweep_ |
+| 9×10¹¹ (baseline) | **1.385** | **−3.91** |
 
 ![V_T vs dose](device_sims/plots/step11_VT_vs_dose.png)
 
@@ -164,21 +164,27 @@ V_T extracted by constant-current method at $|I_D| = 100$ nA, V_sub = 0:
 
 This is the textbook V_T-adjust mechanism predicted in Chapter 2 Assignment 5: a single boron implant moves both V_T's in the same direction (positive on the number line), so the dose is tuned to land both at workable values without separate masking. The simulated $\Delta V_T \approx +0.48$ V per ×3 dose change on NMOS implies a per-dose sensitivity of about $1.6 \times 10^{-12}$ V·cm² — that translates to an effective $C_{ox}^{-1} \cdot q$ shift, consistent with the ~100 nm gate oxide.
 
-### Body effect at lower doses
+### Body effect at all NMOS doses (bonus data)
 
-Per `sdevice_des.cmd`, the substrate-bias sweep is only done at the default 9e11 dose. Reduced-dose runs only have V_sub = 0 to save compute. (Marked with X in the manual's Step 11 table.)
+The manual's Step 11 table marks NMOS V_sub = −1 V and −2 V at non-default doses with **X** (not simulated to save compute). However, a `sed`-substitution quirk in my sweep script accidentally re-triggered the multi-bias branch for 3e11 and 6e11 too (it rewrote the conditional `vtAdj=="9e11"` to `=="3e11"` / `=="6e11"`, which is then TRUE at those doses) — bonus body-effect data fell out:
 
-| V_T-adjust | V_sub | NMOS V_T (V) | PMOS V_T (V) |
+| V_T-adjust | V_sub = 0 | V_sub = −1 V | V_sub = −2 V |
 |---|---|---|---|
-| 3e11 | 0 | 0.905 | _pending_ |
-| 3e11 | −1 | X (not simulated) | X |
-| 3e11 | −2 | X (not simulated) | X |
-| 6e11 | 0 | _pending_ | _pending_ |
-| 6e11 | −1 | X (not simulated) | X |
-| 6e11 | −2 | X (not simulated) | X |
-| 9e11 | 0 | 1.385 | −3.91 |
-| 9e11 | −1 | 2.339 | (PMOS not simulated at -1) |
-| 9e11 | −2 | 2.966 | (PMOS not simulated at -2) |
+| 3×10¹¹ | 0.905 | 1.695 | 2.264 |
+| 6×10¹¹ | 1.162 | 2.013 | 2.622 |
+| 9×10¹¹ | 1.385 | 2.339 | 2.966 |
+
+**Body-effect shift at $V_{sub} = -1$ V** ($\Delta V_T$ from 0 to −1 V):
+- 3e11: +0.790 V
+- 6e11: +0.851 V
+- 9e11: +0.954 V
+
+γ grows with dose — exactly what theory predicts: $\gamma = \sqrt{2 q \varepsilon_{Si} N_{ch}}/C_{ox}$, so more boron → higher channel doping $N_{ch}$ → larger γ.
+
+![NMOS IdVg @ 3e11 body effect](device_sims/plots/step10_NMOS_IdVg_3e11.png)
+![NMOS IdVg @ 6e11 body effect](device_sims/plots/step10_NMOS_IdVg_6e11.png)
+
+PMOS body-effect data remains **X** (per manual) — the conditional in `sdevice_des.cmd` also keys off `deviceType=="NMOS"`, so the PMOS branch keeps V_sub = 0 only, regardless of dose.
 
 ---
 
