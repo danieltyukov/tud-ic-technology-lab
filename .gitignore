@@ -33,12 +33,14 @@ venv/
 *.bbl
 *.blg
 
-# but Sentaurus .out CSVs in simulation directories are kept
-!chapter*/sim_data/*.out
-!chapter*/*sim*/*.out
-
 # Sentaurus simulation outputs we don't need in git
 *.tdr
 *.plt
 *.cmd.cmdlog
 n@node@_*
+
+# Whitelist back: Sentaurus .out CSVs and .plt electrical curves in simulation directories
+!chapter*/sim_data/*.out
+!chapter*/*sim*/*.out
+!chapter*/device_sims/data/*.plt
+!chapter*/*sim*/data/*.plt
