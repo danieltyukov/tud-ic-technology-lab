@@ -143,6 +143,27 @@ plt.close(fig)
 print("Step 7: IdVd curves plotted")
 
 
+# ---------- PMOS IdVd (Step 8, family at V_sub=0) ----------
+pmos_idvd_files = sorted(DATA.glob("n33_PMOS_9e11_IdVd_gateBias_*_current_des.plt"))
+if pmos_idvd_files:
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for fn in pmos_idvd_files:
+        arr, layout = parse_plt(fn.name)
+        vd, id_drain = drain_voltage_current(arr, layout)
+        m = re.search(r"gateBias_(-?\d+(?:\.\d+)?)", fn.name)
+        vg_val = float(m.group(1)) if m else 0
+        ax.plot(vd, id_drain * 1e6, label=f"V_G = {vg_val:+.0f} V")
+    ax.set_xlabel("V_DS [V]")
+    ax.set_ylabel("I_D [µA]")
+    ax.set_title("Step 8: PMOS I_D–V_DS (V_T-adjust = 9×10¹¹, V_sub = 0)")
+    ax.grid(True, ls="--", alpha=0.4)
+    ax.legend(loc="best", fontsize=9, ncol=2)
+    fig.tight_layout()
+    fig.savefig(PLOTS / "step08_PMOS_IdVd.png", dpi=140)
+    plt.close(fig)
+    print(f"Step 8: PMOS IdVd plotted ({len(pmos_idvd_files)} curves)")
+
+
 # ---------- PMOS IdVg (Step 8 — PMOS only V_sub = 0) ----------
 pmos_ivg = DATA / "n29_PMOS_9e11_IdVg_subBias_0_current_des.plt"
 vt_table_pmos = []
@@ -170,6 +191,46 @@ else:
     print("PMOS IdVg .plt not yet available — re-run after PMOS finishes")
 
 
+# ---------- V_T-adjust dose sweep (Steps 9–11) ----------
+# Look for any *_3e11_*subBias_0*.plt and *_6e11_*subBias_0*.plt in data/.
+# Build a V_T-vs-dose plot if at least one variant exists.
+sweep_rows = []
+# Baselines (already extracted above) — pin them in
+sweep_rows.append(("NMOS", 9e11, 0.0, vt_table_nmos[0][1] if vt_table_nmos else None))
+sweep_rows.append(("NMOS", 9e11, -1.0, vt_table_nmos[1][1] if len(vt_table_nmos) > 1 else None))
+sweep_rows.append(("NMOS", 9e11, -2.0, vt_table_nmos[2][1] if len(vt_table_nmos) > 2 else None))
+sweep_rows.append(("PMOS", 9e11, 0.0, vt_table_pmos[0][1] if vt_table_pmos else None))
+# Variant PLTs
+for dose_str, dose_val in [("3e11", 3e11), ("6e11", 6e11)]:
+    for dev in ["NMOS", "PMOS"]:
+        for f in DATA.glob(f"*_{dev}_{dose_str}_*subBias_0*.plt"):
+            arr, layout = parse_plt(f.name)
+            vg, id_drain = gate_drain(arr, layout)
+            vt_c = vt_extract(vg, id_drain, "constant")
+            sweep_rows.append((dev, dose_val, 0.0, vt_c))
+            print(f"Sweep: {dev} @ {dose_str} V_sub=0  →  V_T = {vt_c:.3f} V")
+
+# Plot V_T vs dose (V_sub=0 only)
+if any(r[1] != 9e11 for r in sweep_rows):
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for dev, marker, color in [("NMOS", "o", "C0"), ("PMOS", "s", "C3")]:
+        pts = sorted([(r[1], r[3]) for r in sweep_rows if r[0] == dev and r[2] == 0.0 and r[3] is not None])
+        if pts:
+            doses, vts = zip(*pts)
+            ax.plot(doses, vts, marker=marker, color=color, ls="-", label=dev)
+    ax.set_xscale("log")
+    ax.set_xlabel("V_T-adjust dose [cm⁻²]")
+    ax.set_ylabel("V_T [V]")
+    ax.set_title("Steps 9–11: V_T vs V_T-adjust dose (V_sub = 0)")
+    ax.axhline(0, color="grey", ls=":", alpha=0.5)
+    ax.grid(True, ls="--", alpha=0.4)
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(PLOTS / "step11_VT_vs_dose.png", dpi=140)
+    plt.close(fig)
+    print("Step 11: V_T vs dose plotted")
+
+
 # ---------- Save V_T table ----------
 with open(PLOTS.parent / "vt_summary.txt", "w") as fp:
     fp.write("Device   V_T-adjust dose [cm-2]   V_sub [V]   V_T (const I) [V]   V_T (linear) [V]\n")
@@ -178,4 +239,11 @@ with open(PLOTS.parent / "vt_summary.txt", "w") as fp:
         fp.write(f"NMOS     9e11                     {vsub:+.1f}        {vt_c:>6.3f}             {vt_l:>6.3f}\n")
     for vsub, vt_c, vt_l in vt_table_pmos:
         fp.write(f"PMOS     9e11                     {vsub:+.1f}        {vt_c:>6.3f}             {vt_l:>6.3f}\n")
+    # sweep variants
+    for dev, dose, vsub, vt in sweep_rows:
+        if dose == 9e11:
+            continue
+        if vt is None:
+            continue
+        fp.write(f"{dev}     {dose:<10.0e}              {vsub:+.1f}        {vt:>6.3f}             ---\n")
 print("vt_summary.txt written")
