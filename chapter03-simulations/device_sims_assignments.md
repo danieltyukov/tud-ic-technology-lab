@@ -105,6 +105,8 @@ Ran nodes 32, 34. V_G swept 0 → 7 V in 1 V steps, V_sub = 0, V_DS swept 0 → 
 
 ![NMOS IdVd family](device_sims/plots/step07_NMOS_IdVd.png)
 
+**Parameter changing line to line:** $V_G$. Each line in the plot is a different fixed gate voltage (V_G = 0, 1, 2, 3, 4, 5, 6, 7 V); the x-axis sweeps $V_{DS}$.
+
 **Linear region:** at $V_{DS} \ll V_{GS} - V_T$, the curves are linear with positive slope. Visible at every $V_G$ near $V_{DS} = 0$.
 
 **Saturation region:** at $V_{DS} > V_{GS} - V_T$, the curves flatten. Notice that the saturation point shifts right as $V_G$ rises — at $V_G = 4$ V the knee is at ~1.5 V, at $V_G = 6$ V it's at ~3 V, consistent with $V_{DS,sat} \approx V_{GS} - V_T$.
@@ -113,21 +115,47 @@ Ran nodes 32, 34. V_G swept 0 → 7 V in 1 V steps, V_sub = 0, V_DS swept 0 → 
 
 ---
 
-## Step 8: PMOS
+## Step 8: PMOS — re-run of Steps 3–7
 
-PMOS uses the same flow but with `deviceType=PMOS`, the additional N-Well drive-in (4 hr/1150 °C) in `sprocess_fps`, and an extra `psubstrate` electrode (so the PLT files have 41 columns instead of NMOS's 33 — the parser auto-detects).
+Per the manual, "rerun everything but now for the PMOS and answer the questions starting from 3 again. Note that the PMOS simulation is done only for V_sub = 0 V. As there is an additional anneal to drive-in for the NWELL, the PMOS simulations will take more time."
 
-`sdevice_des.cmd` runs PMOS at $V_{sub} = 0$ only (no body-effect sweep by design — to save compute time during the V_T-adjust scan).
+PMOS uses the same flow but with `deviceType=PMOS`, an additional NWELL drive-in (4 hr at 1150 °C) in `sprocess_fps`, and an extra `psubstrate` electrode (so PLT files have 41 columns instead of NMOS's 33 — the parser auto-detects). Wall-time observation: PMOS sprocess took ~15 min vs NMOS's ~5 min, mostly due to the 4-hr drive-in.
+
+### Step 3 equivalent — PMOS sprocess pipeline
+
+Ran `sprocess_fps` (n15) → `sprocess_vtadj` (n21) → `sprocess_dev` (n25) → output TDR files `n15_fps.tdr`, `n21_fps.tdr`, `n25_dev_fps.tdr` (all committed to `device_sims/data/`).
+
+### Step 4 equivalent — PMOS 2D cross-section + comparison
+
+The PMOS structure is the mirror of NMOS: P⁺ source/drain sitting in an N-Well, instead of N⁺ source/drain in a p-substrate. The manual's figure on p. 22 shows both side by side — the PMOS occupies the left half (pink N-Well containing p⁺-source / p⁺-drain) and NMOS the right half (green p-substrate containing n⁺-source / n⁺-drain).
+
+> _Visualization gap: the n23 `svisual -mesa -b` invocation silently fails to write PNG in batch mode on this server (despite identical-looking n22 having worked once). The TDR data is committed (`n21_fps.tdr`, 8.1 MB) and can be opened in an interactive svisual GUI later. The PMOS structure-vs-textbook discussion is the same as for NMOS (Step 4): rounded source/drain corners from lateral diffusion, graded vertical profiles instead of hard steps._
+
+### Step 5 equivalent — PMOS doping cutlines
+
+Same gap: cutline PNGs and numerical junction depths from the PMOS structure aren't generated in batch mode. From the BICMOS5 implant parameters and the Chapter 2 theory the SP junction depth should land around 0.19 μm (theory) → expected somewhere similar to NMOS's SN depth (~0.45 μm sim) given comparable post-implant anneal time.
+
+### Step 6 equivalent — PMOS V_T (V_sub = 0 only)
+
+`sdevice_des.cmd` runs PMOS at $V_{sub} = 0$ only (no body-effect sweep by design — to save compute time during the V_T-adjust scan, per the manual's table on p. 24 which marks PMOS V_sub ≠ 0 cells as N/A).
 
 ![PMOS IdVg](device_sims/plots/step08_PMOS_IdVg.png)
 
-**PMOS V_T (V_sub = 0):** $V_T = -3.91$ V (constant-current method at $|I_D| = 100$ nA).
+**PMOS V_T (V_sub = 0):** $V_T = -3.91$ V (constant-current method at $|I_D| = 100$ nA, linear-extrapolation gives a poor fit here because the curve curvature near V_T is sharp).
 
-That's quite negative for a CMOS process — the V_T-adjust dose of 9×10¹¹ cm⁻² isn't enough boron to fully compensate the N-Well at the surface and bring the PMOS V_T close to symmetric with NMOS. The dose sweep below shows this.
+That's quite negative for a CMOS process — the V_T-adjust dose of 9×10¹¹ cm⁻² isn't enough boron to compensate the N-Well surface and bring PMOS V_T close to symmetric with NMOS. The dose sweep below (Steps 9–11) shows this is dose-limited.
+
+### Step 7 equivalent — PMOS IdVd
+
+V_G swept 0 → -7 V (with -1 V step). V_DS swept 0 → -5 V. V_sub = 0.
 
 ![PMOS IdVd](device_sims/plots/step08_PMOS_IdVd.png)
 
-PMOS IdVd shows the same linear/saturation structure as NMOS but with negative currents and voltages. Only $V_G \le -4$ V produces meaningful drain current (since |V_G - V_T| must exceed ~0.5 V); $V_G = 0$ and $-1$ V curves sit at zero.
+**Parameter changing line to line:** $V_G$ (each curve = different fixed gate voltage).
+
+**Linear / saturation:** same structure as NMOS, mirrored. Curves at $V_G = 0$, $-1$, $-2$, $-3$ V sit essentially at zero current (below threshold $V_T = -3.91$ V). $V_G = -4$ V starts conducting weakly (~0.4 µA saturation); $V_G = -7$ V reaches ~4.8 µA saturation. Saturation knee position scales with $|V_{GS} - V_T|$ as expected.
+
+**Velocity saturation:** less pronounced than NMOS because the PMOS hole mobility is lower (~1/3 of electron mobility) and the channel field at these voltages doesn't reach the velocity-saturated regime as strongly. The high-V_G curves are noticeably more compressed than V_G = -4/-5 would predict from a pure quadratic model.
 
 ---
 
@@ -154,6 +182,19 @@ V_T extracted by constant-current method at $|I_D| = 100$ nA, V_sub = 0:
 | 3×10¹¹ | **0.905** | **−4.372** |
 | 6×10¹¹ | **1.162** | **−4.372** |
 | 9×10¹¹ (baseline) | **1.385** | **−3.907** |
+
+### Manual's p.24 table — filled
+
+This is the table the manual explicitly asks us to fill ("Several results are required later in the course, use the table on page 24 to create a quick overview"):
+
+| VT-adjust dose | V_T (V) for 3E11 | V_T (V) for 6E11 | V_T (V) for 9E11 |
+|---|---|---|---|
+| NMOS, V_sub = 0 V | **0.905** | **1.162** | **1.385** |
+| NMOS, V_sub = -1 V | _(1.695 bonus)_ | _(2.013 bonus)_ | **2.339** |
+| NMOS, V_sub = -2 V | _(2.264 bonus)_ | _(2.622 bonus)_ | **2.966** |
+| PMOS, V_sub = 0 V | **−4.372** | **−4.372** | **−3.907** |
+
+Cells marked `_(X bonus)_` are filled by our extra body-effect data that wasn't strictly required (the manual marked these as **X**, not simulated, in the original table — but our sweep script accidentally enabled the multi-V_sub branch for 3e11/6e11 too, see body-effect discussion below).
 
 **Observation worth flagging:** the PMOS V_T is *identical* at 3e11 and 6e11 (the underlying PLT files differ only at the 10⁻¹⁶ A level — well below the constant-current extraction threshold). Only at 9e11 does V_T meaningfully shift (by +0.46 V). This is **not a simulation bug** — the n21_*_fps.tdr structures differ, the n25_*_dev_fps.tdr structures differ, and the sdevice inputs are correct.
 
