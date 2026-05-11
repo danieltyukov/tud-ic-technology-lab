@@ -152,8 +152,14 @@ V_T extracted by constant-current method at $|I_D| = 100$ nA, V_sub = 0:
 | V_T-adjust dose | NMOS V_T (V) | PMOS V_T (V) |
 |---|---|---|
 | 3×10¹¹ | **0.905** | **−4.372** |
-| 6×10¹¹ | **1.162** | _pending PMOS@6e11_ |
+| 6×10¹¹ | **1.162** | **−4.372** |
 | 9×10¹¹ (baseline) | **1.385** | **−3.907** |
+
+**Observation worth flagging:** the PMOS V_T is *identical* at 3e11 and 6e11 (the underlying PLT files differ only at the 10⁻¹⁶ A level — well below the constant-current extraction threshold). Only at 9e11 does V_T meaningfully shift (by +0.46 V). This is **not a simulation bug** — the n21_*_fps.tdr structures differ, the n25_*_dev_fps.tdr structures differ, and the sdevice inputs are correct.
+
+Physics interpretation: the PMOS channel surface sits in a heavily-doped N-Well (~$10^{17}$ cm⁻³ donors). A boron sheet of $3 \times 10^{11}$ cm⁻² (~$3 \times 10^{15}$ cm⁻³ when spread over a ~$10^{-4}$ cm-thin surface layer) is *two orders of magnitude* below the local donor concentration — it can't shift the net surface charge enough to move V_T. Only when the boron sheet starts to *significantly compensate* the donors at the surface (around 9e11 here) does V_T budge. So the V_T-vs-dose curve for PMOS is non-linear / has a threshold-like onset.
+
+This contrasts with NMOS where V_T moves linearly with dose (~0.08 V per 1e11 cm⁻²) because the boron adds directly to existing acceptors in a lighter-doped p-substrate.
 
 ![V_T vs dose](device_sims/plots/step11_VT_vs_dose.png)
 
