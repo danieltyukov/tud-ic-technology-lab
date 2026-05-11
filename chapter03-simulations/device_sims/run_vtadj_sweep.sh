@@ -57,11 +57,11 @@ run_variant() {
         "$SD_SRC" > "$DES_CMD"
 
     echo ">>> [$DEVICE @ $DOSE] running sprocess vtadj"
-    sprocess -u -b "$VTADJ_CMD" > "${DEVICE}_${DOSE}_vtadj.log" 2>&1
+    sprocess --max_threads 4 -u -b "$VTADJ_CMD" > "${DEVICE}_${DOSE}_vtadj.log" 2>&1
     echo "    vtadj done"
 
     echo ">>> [$DEVICE @ $DOSE] running sprocess dev"
-    sprocess -u -b "$DEV_CMD" > "${DEVICE}_${DOSE}_dev.log" 2>&1
+    sprocess --max_threads 4 -u -b "$DEV_CMD" > "${DEVICE}_${DOSE}_dev.log" 2>&1
     echo "    dev done"
 
     echo ">>> [$DEVICE @ $DOSE] running sdevice IdVg"
