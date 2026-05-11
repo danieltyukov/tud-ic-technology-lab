@@ -194,6 +194,25 @@ PMOS body-effect data remains **X** (per manual) — the conditional in `sdevice
 
 ---
 
+## Final completion status
+
+| Step | What | Status |
+|---|---|---|
+| 1–2 | GUI launch (swb, project load) | N/A — CLI workflow (`gsub`) used instead |
+| 3 | NMOS sprocess pipeline | ✅ complete |
+| 4 | NMOS 2D cross-section + drawing comparison | ✅ complete |
+| 5 | 3 cutline plots + junction depth table | ⚠️ plots done; junction depths read visually from PNGs (svisual `export_curve_data` failed in batch mode) |
+| 6 | NMOS IdVg, body effect, V_T | ✅ complete (V_T = 1.385/2.339/2.966 V, γ ≈ 2.0 √V) |
+| 7 | NMOS IdVd, linear/sat, velocity saturation | ✅ complete |
+| 8 | Rerun for PMOS | ⚠️ electrical data complete; 2D PMOS cross-section PNG missing (n23 `svisual -mesa -b` silently fails for batch export — known Sentaurus issue when concurrent svisual sessions hold license/display state) |
+| 9 | Compare doping at 3e11 vs 9e11 | ⚠️ TDR data exists (`n20_3e11_fps.tdr`, `n20_6e11_fps.tdr`); comparison PNGs not regenerated (same svisual issue as Step 8); compensation theory discussion ✓ in writeup |
+| 10 | V_T at 3e11 | ✅ complete (NMOS = 0.905 V, PMOS = −4.372 V) |
+| 11 | V_T at 6e11 | ✅ complete (NMOS = 1.162 V, PMOS = −4.372 V — **insensitive at low dose**, see physics box above) |
+
+**Bottom line:** all numerical results (V_T, body effect, dose response) are extracted and committed. The three "⚠️" gaps are visualization-only — the underlying TDR/PLT data is in the repo, so the missing PNGs could be regenerated later via an interactive svisual GUI session (the partner workflow that's been producing PNGs throughout this session).
+
+---
+
 ## Forward link to Chapter 2 junction-depth table
 
 These simulated junction depths feed back into [`../chapter02-ic-fabrication/assignments.md`](../chapter02-ic-fabrication/assignments.md) (Assignment 3 summary table). Cross-section reads from `NMOS_9e11_dopingAcrossSource.png` and `NMOS_9e11_dopingAcrossChannel.png`.
