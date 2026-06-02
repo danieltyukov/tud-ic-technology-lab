@@ -96,7 +96,7 @@ For a **gate oxide** you want thermal oxidation. The gate dielectric sits direct
 
 ## CMOS wafer metal etching and selectivity (Q6–Q10, second group)
 
-A BICMOS wafer finished up to aluminium, then the IC-mask pattern was etched: one wafer wet (phosphoric acid, 35 °C) and one dry (Cl/HBr plasma). Microscope images in `ET4G9/wetetching/` (Image_037–040) and `ET4G9/Dryetch/` (Image_033–036).
+A BICMOS wafer finished up to aluminium, then the IC-mask pattern was etched: one wafer wet (phosphoric acid, 35 °C) and one dry (Cl/HBr plasma). Microscope images in [`ET4G9/wetetching/`](ET4G9/wetetching/) and [`ET4G9/Dryetch/`](ET4G9/Dryetch/).
 
 ### Q6 — Pattern after lithography
 
@@ -108,9 +108,9 @@ After the aluminium clears (colour change from shiny to grey marks the endpoint)
 
 ### Q9 — Isotropic or anisotropic
 
-**Wet = isotropic.** In Image_037 and Image_038 the line edges are rounded and ragged and the lines are visibly narrower than drawn, because the acid undercuts sideways under the resist at the same rate it etches down.
+**Wet = isotropic.** In `wetetch_metal_lines_100x` and `wetetch_comb_structure_100x` the line edges are rounded and ragged and the lines are visibly narrower than drawn, because the acid undercuts sideways under the resist at the same rate it etches down.
 
-**Dry = anisotropic.** In Image_035 and Image_036 the edges are straight and vertical, corners stay sharp, and the narrow lines hold their full mask width. The directional ion bombardment etches down but barely sideways, so there is almost no undercut.
+**Dry = anisotropic.** In `dryetch_comb_lines_50x` and `dryetch_finger_structure_100x` the edges are straight and vertical, corners stay sharp, and the narrow lines hold their full mask width. The directional ion bombardment etches down but barely sideways, so there is almost no undercut.
 
 ### Q10 — Oxide loss and selectivity
 
