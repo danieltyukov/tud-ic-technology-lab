@@ -2,6 +2,8 @@
 
 The 2½-day cleanroom session at the Else Kooi Laboratory. You do the final processing steps on partially-processed wafers and learn the basics of process control.
 
+Extracted data and answers to the manual's processing assignments are in [`assignments.md`](assignments.md). Raw lab photos (four-point-probe, ellipsometer, etch microscopy) are in [`data/`](data/) and [`ET4G9/`](ET4G9/).
+
 ## Tie-in with Chapter 2
 
 The junction depths calculated in Chapter 2 / Assignment 3 are the reference used when interpreting the electrical measurements on the test structures here and in Chapter 6. See:
