@@ -232,6 +232,10 @@ exportgraphics(gcf, fullfile(figD,'mu_vth_vs_geometry.png'), 'Resolution', 180);
 %% ------------------------------------------------------------------
 %  4. Vth vs V_T-adjust dose (20:5 in each quadrant)
 % -------------------------------------------------------------------
+% NOTE: PMOS_3e11_20_5_Id_Vg.csv is Group 14's bottom-left measurement. Our own
+% sweep of that die (quarantined in IC/group_9_problematic/) read Vth = -2.93 V,
+% ~0.6 V off the 5-group consensus — a die at the quadrant boundary. See the
+% README in that folder.
 doses  = [0 3e11 6e11 9e11];
 dtag   = {'0e11','3e11','6e11','9e11'};
 logf('\n--- 4. Vth vs V_T-adjust dose (20:5) ---\n');
@@ -263,7 +267,7 @@ end
 simD   = [3e11 6e11 9e11];
 simN   = [0.905 1.162 1.385];
 simP   = [-4.372 -4.372 -3.907];
-consP3 = -3.587;    % mean PMOS Vth at 3e11 of groups 1,10,13,14,15 (G9 outlier check)
+consP3 = -3.587;    % mean PMOS Vth at 3e11 of groups 1,10,13,14,15 (sanity ref for swapped-in point)
 figure('Visible','off','Position',[0 0 1150 430]);
 tiledlayout(1,2,'TileSpacing','compact','Padding','compact');
 nexttile;
