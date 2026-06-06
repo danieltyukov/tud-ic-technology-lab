@@ -14,9 +14,9 @@ Conclusion's theory ↔ simulation ↔ processing ↔ measurement comparison.
 | Processing: implantations | 1 | ✅ `../chapter04-processing/assignments.md` Q1–Q3 |
 | Processing: etching & selectivity | 2 | ✅ `../chapter04-processing/assignments.md` |
 | Processing: oxide | 2 | ✅ `../chapter04-processing/assignments.md` Q4–Q8 |
-| Measurements: VdP | 2 | ✅ `../chapter06-measurements/results.md` §1 |
-| Measurements: ELM | 1 | ✅ `../chapter06-measurements/results.md` §2 |
-| Measurements: MOSFET | 2 | ✅ `../chapter06-measurements/results.md` §3–4 |
+| Measurements: VdP | 2 | ✅ `../chapter06-measurements/assignments.md` §1 |
+| Measurements: ELM | 1 | ✅ `../chapter06-measurements/assignments.md` §2 |
+| Measurements: MOSFET | 2 | ✅ `../chapter06-measurements/assignments.md` §3 |
 | Lay-out / Language | 2+2 | at writing time |
 
 Report-ready figures (no IC-CAP screenshots, all replotted in MATLAB):
@@ -32,12 +32,10 @@ characteristics, W/L-normalised short-channel comparison.
 | R□ NW / SN / SP (Ω/□) | — | — | 1488.8 / 57.4 / 510.6 | 1740.5 / 60.2 / 488.4 |
 | N̄ NW / SN / SP (cm⁻³) | — | 1–2×10¹⁶ / 1.8×10²⁰ pk / 1.5×10¹⁸ pk | 1.5×10¹⁶ / 2×10¹⁹ / 1.5×10¹⁸ | 1.5×10¹⁶ / 2.3×10¹⁹ / 1.6×10¹⁸ |
 | V_th NMOS @ 3/6/9×10¹¹ (V) | ↑ with dose (qualitative) | 0.905 / 1.162 / 1.385 | — | 0.388 / 0.432 / 0.819 |
-| V_th PMOS @ 3/6/9×10¹¹ (V) | \|V_th\| ↓ with dose | −4.372 / −4.372 / −3.907 | — | (−2.93*) / −3.413 / −3.300 |
+| V_th PMOS @ 3/6/9×10¹¹ (V) | \|V_th\| ↓ with dose | −4.372 / −4.372 / −3.907 | — | −3.511 / −3.413 / −3.300 |
 | µₙ / µₚ (cm²/V·s) | bulk 1417 / 470 | — | — | surface ≈750 / ≈240 |
 | λ 20:5 / 20:1 (V⁻¹) | ∝ 1/L | "slight slope" seen | — | ≈0.02 / ≈0.2 (PMOS 20:1 punch-through) |
 | Metal R□ (Ω/□) | ρ_Al/d ≈ 0.145 | — | — | 0.160 (ρ = 3.2×10⁻⁶ Ω·cm ✓) |
-
-\* Group 9 outlier; cross-group consensus −3.59 V — see `../chapter06-measurements/results.md` §0.
 
 Discussion threads to carry into the Conclusion:
 

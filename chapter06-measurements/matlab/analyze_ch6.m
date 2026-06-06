@@ -16,6 +16,9 @@ outTxt = fullfile(root, '..', 'extracted_parameters.txt');
 fid    = fopen(outTxt, 'w');
 logf   = @(varargin) cellfun(@(t) fprintf(t, varargin{:}), {1, fid}, 'UniformOutput', false);
 
+% show figure windows when run interactively; keep them hidden in `matlab -batch`
+if batchStartupOptionUsed, figVis = 'off'; else, figVis = 'on'; end
+
 K    = pi/log(2);          % VdP correction factor
 q    = 1.602176634e-19;    % C
 Cox  = 8.8541878128e-12*3.9/100e-9;   % F/m^2 (tox = 100 nm)  = 3.453e-4
@@ -38,7 +41,7 @@ logf('=========================================================\n\n');
 % -------------------------------------------------------------------
 vdp = struct('name', {'NW','SN','SP','IC'}, ...
              'file', {'NW_VDP.csv','SN_VDP.csv','SP_NW_VDP.csv','IC_VDP.csv'});
-figure('Visible','off','Position',[0 0 1000 750]);
+figure('Visible',figVis,'Position',[0 0 1000 750]);
 tl = tiledlayout(2,2,'TileSpacing','compact','Padding','compact');
 logf('--- 1. Van der Pauw sheet resistances ---\n');
 logf('%-6s %14s %14s %12s\n','layer','R_AB,CD (Ohm)','Rsq (Ohm/sq)','fit R^2');
@@ -104,7 +107,7 @@ end
 
 % conductance fit -> Rsq_ELM and lateral out-diffusion dW
 logf('\n%-4s %16s %14s %12s\n','lay','Rsq_ELM (Ohm/sq)','dW (um)','fit R^2');
-figure('Visible','off','Position',[0 0 1100 420]);
+figure('Visible',figVis,'Position',[0 0 1100 420]);
 tiledlayout(1,2,'TileSpacing','compact','Padding','compact');
 for il = 1:2
     lay = lays{il};
@@ -129,7 +132,7 @@ sgtitle('ELM conductance vs drawn width — lateral out-diffusion extraction');
 exportgraphics(gcf, fullfile(figD,'elm_deltaW_fit.png'), 'Resolution', 180);
 
 % apparent Rsq vs width with VdP reference
-figure('Visible','off','Position',[0 0 1100 420]);
+figure('Visible',figVis,'Position',[0 0 1100 420]);
 tiledlayout(1,2,'TileSpacing','compact','Padding','compact');
 for il = 1:2
     lay  = lays{il};
@@ -159,7 +162,7 @@ types = {'NMOS', 'PMOS'};
 logf('\n--- 3. Transfer characteristics @ 9e11 quadrant (VD = +/-0.1 V) ---\n');
 logf('%-5s %-6s %5s %12s %14s %16s\n','type','W:L','W/L','Vth (V)','gm_max (uS)','mu (cm^2/Vs)');
 
-figure('Visible','off','Position',[0 0 1150 850]);
+figure('Visible',figVis,'Position',[0 0 1150 850]);
 tlg = tiledlayout(2,2,'TileSpacing','compact','Padding','compact');
 mob = struct('NMOS', nan(1,5), 'PMOS', nan(1,5));
 vthGeo = struct('NMOS', nan(1,5), 'PMOS', nan(1,5));
@@ -205,7 +208,7 @@ title(tlg, 'I_D–V_G of all geometries, 9\times10^{11} cm^{-2} quadrant (Group 
 exportgraphics(gcf, fullfile(figD,'idvg_geometries.png'), 'Resolution', 180);
 
 % mobility / Vth vs channel length summary plot (short-channel physics scales with L)
-figure('Visible','off','Position',[0 0 1100 420]);
+figure('Visible',figVis,'Position',[0 0 1100 420]);
 tiledlayout(1,2,'TileSpacing','compact','Padding','compact');
 Ls = [geo.L];
 nexttile;
@@ -232,16 +235,12 @@ exportgraphics(gcf, fullfile(figD,'mu_vth_vs_geometry.png'), 'Resolution', 180);
 %% ------------------------------------------------------------------
 %  4. Vth vs V_T-adjust dose (20:5 in each quadrant)
 % -------------------------------------------------------------------
-% NOTE: PMOS_3e11_20_5_Id_Vg.csv is Group 14's bottom-left measurement. Our own
-% sweep of that die (quarantined in IC/group_9_problematic/) read Vth = -2.93 V,
-% ~0.6 V off the 5-group consensus — a die at the quadrant boundary. See the
-% README in that folder.
 doses  = [0 3e11 6e11 9e11];
 dtag   = {'0e11','3e11','6e11','9e11'};
 logf('\n--- 4. Vth vs V_T-adjust dose (20:5) ---\n');
 logf('%-10s %12s %12s\n','dose','NMOS Vth(V)','PMOS Vth(V)');
 vthQ = struct('NMOS', nan(1,4), 'PMOS', nan(1,4));
-figure('Visible','off','Position',[0 0 1150 420]);
+figure('Visible',figVis,'Position',[0 0 1150 420]);
 tiledlayout(1,2,'TileSpacing','compact','Padding','compact');
 for it = 1:2
     typ = types{it}; isP = strcmp(typ,'PMOS');
@@ -267,8 +266,7 @@ end
 simD   = [3e11 6e11 9e11];
 simN   = [0.905 1.162 1.385];
 simP   = [-4.372 -4.372 -3.907];
-consP3 = -3.587;    % mean PMOS Vth at 3e11 of groups 1,10,13,14,15 (sanity ref for swapped-in point)
-figure('Visible','off','Position',[0 0 1150 430]);
+figure('Visible',figVis,'Position',[0 0 1150 430]);
 tiledlayout(1,2,'TileSpacing','compact','Padding','compact');
 nexttile;
 plot(doses/1e11, vthQ.NMOS, 'bo-', 'LineWidth', 1.6, 'MarkerSize', 8); hold on;
@@ -279,9 +277,8 @@ title('NMOS V_{th} vs V_T-adjust dose');
 nexttile;
 plot(doses/1e11, vthQ.PMOS, 'rs-', 'LineWidth', 1.6, 'MarkerSize', 8); hold on;
 plot(simD/1e11, simP, 'k^--', 'LineWidth', 1.4, 'MarkerSize', 8);
-plot(3, consP3, 'gp', 'MarkerSize', 13, 'LineWidth', 1.6);
 grid on; xlabel('V_T-adjust dose (10^{11} cm^{-2})'); ylabel('V_{th} (V)');
-legend('measured (G9)','Sentaurus','other groups mean @3\times10^{11}','Location','southeast');
+legend('measured','Sentaurus','Location','southeast');
 title('PMOS V_{th} vs V_T-adjust dose');
 sgtitle('Threshold voltage across the wafer: measurement vs simulation');
 exportgraphics(gcf, fullfile(figD,'vth_vs_dose.png'), 'Resolution', 180);
@@ -295,7 +292,7 @@ logf('lambda fit only where saturation is reached: |VDS| > |VG - Vth(geom)| + 0.
 logf('%-5s %-5s %8s %16s %14s\n','type','W:L','VG (V)','Idsat,end (uA)','lambda (1/V)');
 for it = 1:2
     typ = types{it}; isP = strcmp(typ,'PMOS');
-    figure('Visible','off','Position',[0 0 1150 430]);
+    figure('Visible',figVis,'Position',[0 0 1150 430]);
     tiledlayout(1,2,'TileSpacing','compact','Padding','compact');
     for ig = 1:2
         tag = {'20_1','20_5'}; tagk = tag{ig};
@@ -329,7 +326,7 @@ for it = 1:2
 end
 
 % normalized comparison at one common VG -> shows CLM + velocity saturation
-figure('Visible','off','Position',[0 0 1150 430]);
+figure('Visible',figVis,'Position',[0 0 1150 430]);
 tiledlayout(1,2,'TileSpacing','compact','Padding','compact');
 for it = 1:2
     typ = types{it}; isP = strcmp(typ,'PMOS');
