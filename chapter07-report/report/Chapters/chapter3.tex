@@ -1,79 +1,83 @@
-\section{Process simulation}
+\section{Process Simulations}
+\label{sec:procsim}
+
+The doping profiles of the BICMOS5 process were simulated with Sentaurus Process (\verb|sprocess|) on a one-dimensional grid: at every node the simulator tracks the dopant concentration through a sequence of implantation, diffusion, oxidation, deposition and etch statements. The assignments below investigate implantation profiles and channeling in crystalline and amorphous silicon, diffusion of the four standard dopants, the solid solubility limit, and the masking capability of photoresist, oxide and nitride layers. Assignments 1 and 2 of the manual concern inspecting and running the provided \verb|implant-As.cmd|, \verb|implant-B.cmd| and \verb|implant-Sb.cmd| scripts; the numbering below follows the manual, starting with the first assignment that produces results for discussion. All implants use a dose of $1\times10^{15}~\mathrm{cm^{-2}}$, with the energies chosen such that the projected ranges match. Each script implants a single species, because the lattice damage caused by one implant would change the channeling behaviour of the next one.
+
 \subsection{Process Simulation - 3}
-From the implantation profile plot Fig.  \ref{fig:implantation_profile} and the .out files generated, the peak concentrations  for Sb is approximately $1.32904 \times 10^{20}\text{ cm}^{-3}$ at 0.086 µm, and for As, it is about $1.12664 \times 10^{20}\text{ cm}^{-3}$ at 0.091 µm, and the peak concentration of B  is roughly $1.00165 \times 10^{20}\text{ cm}^{-3}$ at 0.093 µm.
+From the implantation profile plot in Fig.~\ref{fig:implantation_profile} and the generated .out files, the peak concentration for Sb is approximately $1.33 \times 10^{20}\text{ cm}^{-3}$ at 0.086 µm depth, for As it is about $1.13 \times 10^{20}\text{ cm}^{-3}$ at 0.091 µm, and for B it is roughly $1.00 \times 10^{20}\text{ cm}^{-3}$ at 0.093 µm.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/implant_py.png}
-    \caption{Simulated implantation profiles of arsenic (black), boron(green) and antimony (red) in crystalline silicon at matched projected range.}
+    \caption{Simulated implantation profiles of arsenic (black), boron (green) and antimony (red) in crystalline silicon at matched projected range.}
     \label{fig:implantation_profile}
 \end{figure}
 
- None of the profiles is Gaussian because standard Gaussian would appear as a symmetric, inverted parabola on a log plot. Among Boron, Arsenic and Antimony, Boron has the shortest tail because the profile drops below $10^{13} \text{ cm}^{-3}$ already at $0.4\text{ }\mu\text{m}$. Antimony has a longer tail than boron, but its concentration is lower than Arsenic at larger depths. Arsenic has the longest tail because its concentration is still above Antimony at the depth of 1 µm.
+None of the profiles is Gaussian: a standard Gaussian would appear as a symmetric, inverted parabola on a log plot, whereas all three profiles show an asymmetric channeling tail towards larger depths. Among boron, arsenic and antimony, boron has the shortest tail, as its profile drops below $10^{14} \text{ cm}^{-3}$ already around $0.4\,\mu\text{m}$. Antimony has a longer tail than boron, but its concentration falls below that of arsenic at larger depths. Arsenic has the longest tail: its concentration is still the highest of the three at a depth of 1 µm, a consequence of the ion-steering effect that guides As ions into channeling directions even for a tilted beam.
 
 \subsection{Process Simulation - 4}
-From \verb|implant-B.cmd|, \verb|implant-As.cmd|, \verb|implant-Sb.cmd|, the energy of B, As, and Sb are 24 keV, 148 keV and 200 keV respectively. As and Sb are As P lies between B and As, one way to estimate the energy of P used in implanation is using linear interpolation between B and As
+From \verb|implant-B.cmd|, \verb|implant-As.cmd| and \verb|implant-Sb.cmd|, the implantation energies of B, As and Sb are 24 keV, 148 keV and 200 keV respectively. Since the atomic mass of P lies between those of B and As, one way to estimate the energy needed to implant P to the same projected range is linear interpolation between B and As:
 
 \begin{gather*}
-E_{P} = E_{B} + \frac{m_{P} - m_{B}}{m_{As} - m_{B}} (E_{As} - E_{B}) 
+E_{P} = E_{B} + \frac{m_{P} - m_{B}}{m_{As} - m_{B}} (E_{As} - E_{B})
 \end{gather*}
-As the relative atomic mass of P, B and As are 31, 11 and 75 respectively, Substitution into the equation above gives
+With the relative atomic masses of P, B and As being 31, 11 and 75 respectively, substitution gives
 \begin{gather*}
-E_{P} = 24 + \frac{31 - 11}{75 - 11} (148 - 24) = 24 + \frac{20}{64} \times 124 \approx 62.75 \text{ keV} 
+E_{P} = 24 + \frac{31 - 11}{75 - 11} (148 - 24) = 24 + \frac{20}{64} \times 124 \approx 62.75 \text{ keV}
 \end{gather*}
 Therefore, the energy used in \verb|implant-P.cmd| is selected as $E_{P} \approx 63 \text{ keV}$.
 
-Setting \verb|energy=63| in \verb|implant-P.cmd| and rerunning the implant.py gives the plt shown in Fig. \ref{fig:implantation_profile_with_p}. The implantation profile of P is the blue curve.
+Setting \verb|energy=63| in \verb|implant-P.cmd| and rerunning \verb|implant.py| gives the plot shown in Fig.~\ref{fig:implantation_profile_with_p}. The implantation profile of P is the blue curve.
 
-From the generated .out file, the peak concentration of P, which is $1.19169 \times 10^{20}\text{ cm}^{-3}$, appears at the depth of 0.080 µm. The resulting implantation profile has its peak at approximately the same depth as the other three dopants (Sb at 0.086 µm, As at 0.091 µm, B at 0.093 µm), so this energy is a reasonable estimate.
+From the generated .out file, the peak concentration of P, which is $1.19 \times 10^{20}\text{ cm}^{-3}$, appears at a depth of 0.080 µm. The resulting implantation profile has its peak at approximately the same depth as the other three dopants (Sb at 0.086 µm, As at 0.091 µm, B at 0.093 µm), so this energy is a reasonable estimate.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/implant_with_p_py.png}
-    \caption{Simulated implantation profiles of arsenic (black), boron(green), phosphorous(blue), and antimony (red) in crystalline silicon at matched projected range.}
+    \caption{Simulated implantation profiles of arsenic (black), boron (green), phosphorus (blue) and antimony (red) in crystalline silicon at matched projected range.}
     \label{fig:implantation_profile_with_p}
 \end{figure}
 
 
 \subsection{Process Simulation - 5}
-The implantation profiles of Boron, Phosphorus, Arsenic and Antimony in amorphous silicon are shown in Fig. \ref{fig:armorf_profile} below
+The Monte Carlo simulated implantation profiles of boron, phosphorus, arsenic and antimony in amorphous silicon are shown in Fig.~\ref{fig:armorf_profile}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{Figures/armorf_cmd.png}
-    \caption{Simulated implantation profiles in amorphous silicon}
+    \caption{Monte Carlo simulated implantation profiles of the four dopants in amorphous silicon.}
     \label{fig:armorf_profile}
 \end{figure}
 
 In amorphous silicon, all implantation profiles are closer to a Gaussian distribution. This is because amorphous silicon has no crystal channels, so channeling is strongly reduced. The implantation ions cannot travel deeply along specific lattice directions.
 
-All implantations can be run after each other in armorphous silicon because the substrate is amorphous. The damage caused by one implantation doesn't change the crystal channeling behaviour of the following implantation. 
+All implantations can be run after each other in amorphous silicon because the substrate has no crystal structure to begin with. The damage caused by one implantation does not change the channeling behaviour of the following implantation.
 
 In contrast, the implantations in crystalline silicon were simulated separately because the damage from one implantation could affect the next implantation.
 
 
 
 \subsection{Process Simulation - 6 \& 7}
-After running the script with the default setting, which is 40 keV and the tilt of the implantation is $7 \degree$, the plot generated is shown below.
+In this assignment, phosphorus is implanted at 40 keV while the tilt angle of the implantation is varied. Running the script with the default tilt of $7\degree$ gives the profile shown in Fig.~\ref{fig:tilt_7}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/tilt_7.png}
-    \caption{Phosphorus implantation profiles with the energy of 40\,keV for tilt angle of 7\textdegree}
+    \caption{Phosphorus implantation profile at 40\,keV for the default tilt angle of 7\textdegree.}
     \label{fig:tilt_7}
 \end{figure}
 
-Using the generated .out files, the implantation profiles of Phosphorus with 40 keV and 6 different tilt angles, including the default $7\degree$, $0\degree$, $3\degree$, $11\degree$, $13\degree$ and $15\degree$, are shown in Fig. \ref{fig:tilt_sweep}.
+Using the generated .out files, the implantation profiles of phosphorus at 40 keV for six different tilt angles ($0\degree$, $3\degree$, $7\degree$, $11\degree$, $13\degree$ and $15\degree$) are compared in Fig.~\ref{fig:tilt_sweep}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{Figures/tilt_sweep.png}
-    \caption{Phosphorus implantation profiles with the energy of 40\,keV for tilt angles of 0\textdegree, 3\textdegree, 7\textdegree, 11\textdegree,13\textdegree and 15\textdegree}
+    \caption{Phosphorus implantation profiles at 40\,keV for tilt angles of 0\textdegree, 3\textdegree, 7\textdegree, 11\textdegree, 13\textdegree and 15\textdegree.}
     \label{fig:tilt_sweep}
 \end{figure}
 
-From the simulation results, $7\degree$ is the smallest tilt that is able to suppress the channeling tail, and larger tilt angles give no further improvement.
+The tilt has a strong impact on the implantation depth: going from $0\degree$ to $7\degree$ nearly halves the depth at which the profile crosses the $10^{16}~\mathrm{cm^{-3}}$ level (from about $0.67$ to $0.39~\mu\mathrm{m}$), because the tilted beam no longer looks straight into the open channels of the crystal. Beyond $7\degree$ the profiles hardly change, since the channels are already missed. The best angle found is therefore $7\degree$: it is the smallest tilt that suppresses the channeling tail, and larger angles give no further improvement while increasing the lateral spread of the implant. This matches the standard $7\degree$ tilt and $22\degree$ rotation setting of the EKL implanter.
 
 
 
 \subsection{Process Simulation - 8}
-The dopant profiles after implantation in amorphous silicon followed by diffusion at $1000^\circ\mathrm{C}$ for 5 hours is shown in Figure~\ref{fig:diffamorf}.
+The dopant profiles after implantation in amorphous silicon followed by diffusion at $1000^\circ\mathrm{C}$ for 5 hours are shown in Figure~\ref{fig:diffamorf}.
 
 \begin{figure}[H]
     \centering
@@ -82,7 +86,7 @@ The dopant profiles after implantation in amorphous silicon followed by diffusio
     \label{fig:diffamorf}
 \end{figure}
 
-From the simulated results, from narrowest to widest diffusion profile, the dopants can be ordered as
+Based on the simulated results, the dopants can be ordered from the narrowest to the widest diffusion profile as
 
 \[
 \mathrm{Sb} < \mathrm{As} < \mathrm{B} < \mathrm{P}
@@ -94,7 +98,7 @@ According to Table \ref{tab:misfit_factor}, dopants with negative misfit factors
 stronger diffusion, while dopants with no misfit (As) or with positive misfit (Sb) diffuse less.
 \begin{table}[h]
     \centering
-    \caption{Solid solubility limit and misfit factor for different dopants.}
+    \caption{Solid solubility limit at 1150\,\textdegree C and misfit factor for different dopants \cite{et4icp_manual}.}
     \label{tab:misfit_factor}
     \begin{tabular}{lcccc}
         \toprule
@@ -108,13 +112,13 @@ stronger diffusion, while dopants with no misfit (As) or with positive misfit (S
     \end{tabular}
 \end{table}
 
- Therefore, the simulation shows a relation between misfit factor and diffusion width, although the relation between the misfit factor and diffusion width is clearly not proportional.
+ Therefore, the simulation shows a relation between the misfit factor and the diffusion width, although the relation is clearly not proportional. This is because the misfit factor only affects the strain-driven component of the diffusion, while the dominant contribution comes from the diffusion mechanism itself: boron and phosphorus diffuse mainly via the fast interstitialcy mechanism, whereas arsenic and antimony are mostly substitutional diffusers that depend on the rarer vacancies \cite{plummer2000silicon}.
 
  \subsection{Process Simulation - 9}
 The implantation and diffusion profiles of Sb for two different implantation doses ($1\times10^{15}~\mathrm{cm^{-2}}$ and 
 $1\times10^{14}~\mathrm{cm^{-2}}$) are plotted.
 
-For the default dose (Fig.~\ref{fig:impl_1e15}), the implanted peak reaches $1.32843 \times 10^{20}$ cm$^{-3}$, which is above the Sb solid solubility limit at 1150\,\textdegree C ($1 \times 10^{20}$ cm$^{-3}$). After diffusion, the profile near the peak takes a hat-like shape. The excess Sb above the limit cannot occupy lattice sites and forms inactive clusters, so the active concentration is held at the cap until the profile falls below the solubility limit.
+For the default dose (Fig.~\ref{fig:impl_1e15}), the implanted peak reaches $1.33 \times 10^{20}$ cm$^{-3}$, which is above the Sb solid solubility limit ($1 \times 10^{20}$ cm$^{-3}$, Table~\ref{tab:misfit_factor}). After diffusion, the profile near the peak takes a flat-topped shape. The excess Sb above the limit cannot occupy lattice sites and forms inactive clusters, so the active concentration is held at the cap until the profile falls below the solubility limit.
 
 \begin{figure}[H]
     \centering
@@ -124,8 +128,7 @@ For the default dose (Fig.~\ref{fig:impl_1e15}), the implanted peak reaches $1.3
     \label{fig:impl_1e15}
 \end{figure}
 
-For the reduced dose (Fig. \ref{fig:impl_1e14}), the peak of implantation profile is $7.79507 \times 10^{18}$ cm$^{-3}$, which is below the solubility limit. and
-the diffused profile is therefore smoother.
+For the reduced dose (Fig.~\ref{fig:impl_1e14}), the peak of the implantation profile is $7.80 \times 10^{18}$ cm$^{-3}$, which is below the solubility limit, and the diffused profile therefore keeps a smooth, Gaussian-like shape without clipping.
 
 \begin{figure}[H]
     \centering
@@ -136,6 +139,8 @@ the diffused profile is therefore smoother.
 \end{figure}
 
 \subsection{Process Simulation - 10}
+Table~\ref{tab:dopant-ranking} ranks the four dopants for each property from best (1) to worst (4), based on the simulation results of this section.
+
 \begin{table}[H]
     \centering
     \caption{Dopant ranking per property (1 = best, 4 = worst).}
@@ -144,62 +149,66 @@ the diffused profile is therefore smoother.
         \toprule
         Dopant & Doping type & Short channeling tail & Narrow diffusion & Solid solubility \\
         \midrule
-        Sb & n & 3 & 1 & 4 \\
+        Sb & n & 2 & 1 & 4 \\
         As & n & 4 & 2 & 1 \\
-        P  & n & 2 & 4 & 2 \\
+        P  & n & 3 & 4 & 2 \\
         B  & p & 1 & 3 & 3 \\
         \bottomrule
     \end{tabular}
 \end{table}
+
+The channeling-tail ranking follows from the crystalline implantation profiles of Process Simulations 3 and 4, where the tail lengths (distance between the profile peak and the $10^{16}~\mathrm{cm^{-3}}$ crossing) order as B $<$ Sb $<$ P $<$ As. The diffusion ranking follows from the diffused profile widths of Process Simulation 8 (Sb $<$ As $<$ B $<$ P), and the solid solubility ranking from Table~\ref{tab:misfit_factor} (As $2\times10^{21}$, P $1.5\times10^{21}$, B $4\times10^{20}$, Sb $1\times10^{20}~\mathrm{cm^{-3}}$).
 
 
  \subsection{Process Simulation - 11}
 For the NMOS drain, a high dopant concentration and a sharp profile are required. Therefore, arsenic is the best choice. Arsenic is an n-type dopant with high solid
 solubility, which allows a high active concentration. It also diffuses narrowly, which gives a highly doped and relatively sharp source/drain junction.
 
-For the N-well, because the dopant must diffuse a few micrometers into the silicon with moderate concentration, phosphorus is the best choice. Phosphorus is an n-type dopant and diffuses deeper and wider than arsenic or antimony, making it suitable for forming a deep N-well. It also has a high solid solubility, so it can also meet the moderate concentration requirement easily.
+For the N-Well, where the dopant must diffuse a few micrometres into the silicon at a moderate concentration, phosphorus is the best choice. Phosphorus is an n-type dopant that diffuses deeper and wider than arsenic or antimony, which makes it suitable for forming a deep well during a long drive-in, and its high solid solubility easily meets the moderate concentration requirement. This is exactly the combination used in the BICMOS5 process: arsenic for the SN source/drain regions and phosphorus for the N-Well.
 
 
 \subsection{Process Simulation - 12}
 
+In the masking simulations, a $0.4~\mu\mathrm{m}$ layer of photoresist, oxide or nitride is deposited on the silicon, after which a 160~keV phosphorus implantation is performed. In the resulting plots the negative part of the depth axis is the masking layer and the positive part the silicon.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/resist_cmd.png}
-    \caption{Phosphorus implantation profile through a $0.4~\mu\mathrm{m}$ photoresist mask.}
+    \caption{Phosphorus implantation profile through a $0.4~\mu\mathrm{m}$ photoresist mask. The vertical axis is $\log_{10}$ of the phosphorus concentration in $\mathrm{cm^{-3}}$; negative depths lie inside the resist.}
     \label{fig:resist_mask}
 \end{figure}
 
-The negative part of the x-axis of Fig. \ref{fig:resist_mask} represents the resist mask, because the phosphorus concentration is still present in the silicon region after passing through the resist. Therefore, a $0.4~\mu\mathrm{m}$ photoresist layer is not a sufficient implantation mask for this phosphorus implantation.
+Figure~\ref{fig:resist_mask} shows that the phosphorus peak lies inside the resist, but the tail of the profile crosses the silicon surface at a concentration near $10^{19}~\mathrm{cm^{-3}}$ and stays above the $10^{16}~\mathrm{cm^{-3}}$ level down to more than $0.3~\mu\mathrm{m}$ into the silicon. A $0.4~\mu\mathrm{m}$ photoresist layer is therefore not a sufficient implantation mask for this phosphorus implantation.
 
 \subsection{Process Simulation - 13}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/resist_cmd_1000nm.png}
-    \caption{Phosphorus implantation profile through a $1~\mu\mathrm{m}$ photoresist mask.}
+    \caption{Phosphorus implantation profile through a $1~\mu\mathrm{m}$ photoresist mask. The vertical axis is $\log_{10}$ of the phosphorus concentration in $\mathrm{cm^{-3}}$; negative depths lie inside the resist.}
     \label{fig:resist_mask_1000nm}
 \end{figure}
 
-After increasing the thickness of the photoresist layer from $0.4~\mu\mathrm{m}$ to $1~\mu\mathrm{m}$, the phosphorus concentration drops to zero before reaching the silicon region. Therefore, a $1~\mu\mathrm{m}$ photoresist layer is sufficient as an implantation mask for this phosphorus implantation.
+After increasing the thickness of the photoresist layer from $0.4~\mu\mathrm{m}$ to $1~\mu\mathrm{m}$, the whole phosphorus profile is contained inside the resist and the concentration drops to zero well before the silicon interface. Therefore, a $1~\mu\mathrm{m}$ photoresist layer is sufficient as an implantation mask for this phosphorus implantation: resist can mask, but it needs to be roughly $2.5$ times thicker than the denser hard-mask materials below.
 
 
 \subsection{Process Simulation - 14 \& 15}
 
-For the oxide mask, phosphorus ions still enter the silicon underneath. Therefore, an oxide layer with a thickness $0.4~\mu\mathrm{m}$ is insufficient.
+For the oxide mask (Figure~\ref{fig:oxide_mask}), the phosphorus peak lies deeper inside the mask, at about $-0.2~\mu\mathrm{m}$, and only a weak tail reaches the silicon: the concentration at the silicon surface is below $10^{14}~\mathrm{cm^{-3}}$, i.e.\ at or below the substrate background doping. A $0.4~\mu\mathrm{m}$ oxide layer therefore just barely masks this implantation, but with essentially no process margin.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/oxide_cmd.png}
-    \caption{Phosphorus implantation profile through an oxide mask.}
+    \caption{Phosphorus implantation profile through a $0.4~\mu\mathrm{m}$ oxide mask. The vertical axis is $\log_{10}$ of the phosphorus concentration in $\mathrm{cm^{-3}}$; negative depths lie inside the oxide.}
     \label{fig:oxide_mask}
 \end{figure}
 
-For the nitride mask, the Phosphorus concentration in the silicon is effectively zero. Therefore, in terms of stopping power, a $0.4~\mu\mathrm{m}$ thick nitride mask the most effective mask compared with oxide mask and photoresist mask with the same thickness.
+For the nitride mask (Figure~\ref{fig:nitride_mask}), the phosphorus concentration already drops to zero about $0.03~\mu\mathrm{m}$ before the silicon interface, so the silicon stays completely clean. In terms of stopping power, a $0.4~\mu\mathrm{m}$ nitride mask is therefore the most effective of the three, followed by oxide and then photoresist. This ordering follows the film densities: nitride ($3.1~\mathrm{g/cm^3}$) is denser than oxide ($2.2~\mathrm{g/cm^3}$), which is denser than resist (about $1.2~\mathrm{g/cm^3}$), and a denser film stops the ions over a shorter distance.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/nitride_cmd.png}
-    \caption{Phosphorus implantation profile through a nitride mask.}
+    \caption{Phosphorus implantation profile through a $0.4~\mu\mathrm{m}$ nitride mask. The vertical axis is $\log_{10}$ of the phosphorus concentration in $\mathrm{cm^{-3}}$; negative depths lie inside the nitride.}
     \label{fig:nitride_mask}
 \end{figure}
 
@@ -207,40 +216,39 @@ Nitride is almost never used as a standard implantation mask because a nitride l
 
 In standard processing, photoresist is used most often because it is easy to pattern. Although photoresist has relatively low stopping power, it can be made thick enough to absorb the ions so that none reach the silicon. Finally, it can be removed easily after implantation.
 
-\section{Device simulation}
+\section{Device Simulations}
+\label{sec:devsim}
+
+In the device-simulation part, the complete BICMOS5 process flow was first simulated in two dimensions with Sentaurus Process (assignments 1 to 3, which involve loading and running the provided Sentaurus Workbench project), after which the electrical behaviour of the resulting NMOS and PMOS structures was computed with Sentaurus Device. The device simulator solves the Poisson equation and the electron and hole continuity equations on the 2D mesh, including Shockley-Read-Hall and Auger recombination and doping- and field-dependent mobility, and sweeps the terminal voltages to produce $I_D$--$V_G$ and $I_D$--$V_{DS}$ characteristics. The questions below follow the assignment numbering of the manual.
+
 \subsection{Device Simulation - 4}
-For NMOS, the 2D cross-section of the NMOS generated by SVisual generally matches the reference cross-section from the manual. In the reference cross-section, the source, drain, substrate contact, oxide, and metal regions are drawn as ideal rectangular shapes. While the visualization result depicts a more realistic view. The doped regions are not rectangular and the doping concentration also changes gradually with depth instead of having a defined boundary.
+The 2D cross-section of the NMOS generated by SVisual (Figure~\ref{fig:nmos_cross_section}) generally matches the reference cross-section from the manual: the n$^{+}$ source and drain regions sit in the p-type substrate with the substrate contacts at the edges and the aluminium contacts on top. The main difference is that the manual draws the source, drain, substrate contact, oxide and metal regions as ideal rectangles, while the simulated structure shows a more realistic picture: the doped regions have rounded corners from lateral diffusion during the anneals, and the doping concentration changes gradually with depth instead of having a sharp boundary.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{Figures/NMOS_9e11_deviceStructure.png}
-    \caption{Simulated NMOS cross-section showing the net active dopant concentration for a VT-adjust dose of $9\times10^{11}~\mathrm{cm^{-2}}$.}
+    \caption{Simulated NMOS cross-section showing the net active dopant concentration for a $V_T$-adjust dose of $9\times10^{11}~\mathrm{cm^{-2}}$.}
     \label{fig:nmos_cross_section}
 \end{figure}
 
-For PMOS, the 2D cross-section of the PMOS generated by SVisual also generally matches the reference cross-section from the manual.
+The 2D cross-section of the PMOS (Figure~\ref{fig:pmos_cross_section}) also matches the reference drawing: it is the mirror image of the NMOS, with p$^{+}$ source and drain regions inside the deep n-type well instead of n$^{+}$ regions in the p-substrate, and it shows the same rounded corners and graded junction transitions.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{Figures/PMOS_9e11_deviceStructure.png}
-    \caption{Simulated PMOS cross-section showing the net active dopant concentration for a VT-adjust dose of $9\times10^{11}~\mathrm{cm^{-2}}$.}
+    \caption{Simulated PMOS cross-section showing the net active dopant concentration for a $V_T$-adjust dose of $9\times10^{11}~\mathrm{cm^{-2}}$.}
     \label{fig:pmos_cross_section}
 \end{figure}
 
 \subsection{Device Simulation - 5}
-The simulated profiles are net active doping profiles. In the NMOS, the source and drain are n-type SN regions, while the channel and substrate are p-type. In the PMOS, the device is located inside the n-type N-well, and the source and drain are p-type SP regions.
+The simulated profiles are net active doping profiles, i.e.\ they show the $|n-p|$ concentration, and the doping type of each region follows from which species dominates. In the NMOS, the source and drain are n-type SN regions, while the channel and substrate are p-type. In the PMOS, the device is located inside the n-type N-Well, and the source and drain are p-type SP regions; below the well the wafer returns to the p-type substrate.
 
-The simulated junction depths were extracted from the .csv files generated by finding where the signed net active doping crosses zero. The extracted values are $0.537~\mu\mathrm{m}$ for SN, $2.085~\mu\mathrm{m}$ for the N-well, and $0.594~\mu\mathrm{m}$ for SP.
+The simulated junction depths were extracted from the exported cutline data by finding numerically where the signed net active doping crosses zero. The extracted values are $0.537~\mu\mathrm{m}$ for SN, $2.085~\mu\mathrm{m}$ for the N-Well, and $0.594~\mu\mathrm{m}$ for SP.
 
-The simulated values differ from the calculated values because the calculations in Chapter 2 assume the implantation profiles follow Gaussian distribution and there is no subsequent thermal steps, while the simulation includes the full process flow and dopant redistribution during the thermal steps.
-
-Simulation results shows that the depth of SN and SP are much deeper than calculated.
-
-Meanwhile, N-WELL is simulated slightly shallower than calculated.
-
+The simulated values differ from the calculated values of Section~\ref{sec:tech} because the analytical calculations assume purely Gaussian profiles and neglect all thermal steps after the implantation, while the simulation includes the full process flow and the dopant redistribution during every anneal. The SN junction is simulated about six times deeper than calculated: the analytical estimate ignores the gate-oxidation anneal at $1000\,^\circ$C that diffuses the arsenic further, and the solid solubility limit clips the As peak from the theoretical $1.75\times10^{21}$ down to the simulated $1.8\times10^{20}~\mathrm{cm^{-3}}$, which pushes the junction deeper for the same dose. The SP junction is about three times deeper than calculated for the same reason, amplified by the fast interstitialcy diffusion of boron in the implantation-damaged silicon. The N-Well, in contrast, is simulated slightly shallower than calculated (within about 13\%): there the analytical limited-source model is a good approximation, because the 4-hour drive-in dominates the profile and smooths the implant into a nearly Gaussian shape. Table~\ref{tab:xj} summarizes the comparison.
 
 \begin{table}[H]
     \centering
-    \caption{Junction depth: analytical (Chapter 2) vs Sentaurus simulation.}
+    \caption{Junction depths: analytical calculation (Section~\ref{sec:tech}) versus Sentaurus simulation.}
     \label{tab:xj}
     \begin{tabular}{lcc}
         \toprule
@@ -255,56 +263,45 @@ Meanwhile, N-WELL is simulated slightly shallower than calculated.
 
 
 \subsection{Device Simulation - 6}
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{Figures/NMOS_9e11_IdVg.png}
+    \includegraphics[width=0.7\linewidth]{Figures/NMOS_9e11_IdVg.png}
     \caption{Simulated NMOS $I_D$--$V_G$ characteristics at $V_D = 0.1$~V for substrate bias $V_\text{Sub} = 0$, $-1$, and $-2$~V ($V_T$-adjust dose $9 \times 10^{11}$~cm$^{-2}$).}
     \label{fig:nmos-idvg}
 \end{figure}
 
-The threshold voltage is extracted from the exported $I_D$--$V_G$ data by linear extrapolation at maximum transconductance. In the linear region (small $V_D$) the drain current is
+The threshold voltage is extracted from the exported $I_D$--$V_G$ data with the constant-current method, defining $V_T$ as the gate voltage at which $|I_D| = 100$~nA. As a cross-check, linear extrapolation at maximum transconductance was applied as well: in the linear region (small $V_D$) the drain current is
 \begin{gather*}
 I_D = \mu_n C_\text{ox} \frac{W}{L}\left(V_{GS} - V_T - \frac{V_{DS}}{2}\right) V_{DS},
 \end{gather*}
-which is linear in $V_{GS}$. Extrapolating the tangent taken at the point of maximum
-transconductance $(V_{GS}^{\prime}, I_D^{\prime})$ to $I_D = 0$ gives the intercept
-$V_{GS0} = V_T + V_{DS}/2$, so
-\begin{gather*}
-V_T = V_{GS0} - \frac{V_DS}{2}, \qquad \frac{V_{DS}}{2} = 0.05~\text{V}.
-\end{gather*}
-where the intercept is evaluated from the data as
-\begin{gather*}
-V_{GS0} = V_{GS}^{\prime} - \frac{I_D^{\prime}}{g_{m,\text{max}}},
-\qquad
-g_{m,\text{max}} = \max\!\left(\frac{\Delta I_D}{\Delta V_{GS}}\right).
-\end{gather*}
+which is linear in $V_{GS}$, so extrapolating the tangent taken at the point of maximum transconductance $g_{m,\text{max}} = \max(\Delta I_D/\Delta V_{GS})$ to $I_D = 0$ gives an intercept $V_{GS0} = V_T + V_{DS}/2$ from which $V_T$ follows. Both methods agree to better than $0.1$~V for the NMOS.
 
-This yields $V_T = 1.26$, $2.17$, and $2.78$~V for $V_\text{Sub} = 0$, $-1$, and $-2$~V, respectively.
+The constant-current extraction yields $V_T = 1.385$, $2.339$ and $2.966$~V for $V_\text{Sub} = 0$, $-1$ and $-2$~V, respectively (linear extrapolation gives $1.31$, $2.23$ and $2.84$~V).
 
-The threshold voltage increases as $V_\text{Sub}$ becomes more negative. This is the body effect: a more negative $V_\text{Sub}$ raises the reverse source-body bias $V_{SB} = -V_\text{Sub}$, widening the channel-substrate depletion region and adding depletion charge that the gate must balance before inversion. This matches the theory of the body effect,
-\begin{gather*}
+The threshold voltage increases as $V_\text{Sub}$ becomes more negative. This is the body effect: a more negative $V_\text{Sub}$ raises the reverse source-body bias $V_{SB} = -V_\text{Sub}$, widening the channel-substrate depletion region and adding depletion charge that the gate must balance before inversion. This matches the theory of the body effect \cite{sze2007physics},
+\begin{equation}
 V_T = V_{T0} + \gamma\left(\sqrt{2\phi_F + V_{SB}} - \sqrt{2\phi_F}\right),
-\end{gather*}
-where $V_T$ rises with $V_{SB}$, consistent with the simulated trend.
+\label{eq:body-effect}
+\end{equation}
+where $V_{T0}$ is the threshold at zero body bias, $\gamma = \sqrt{2q\varepsilon_{s} N_{A}}/C_\text{ox}$ the body-effect coefficient and $2\phi_F$ the surface potential at inversion. Fitting Equation~\eqref{eq:body-effect} to the three simulated points with $2\phi_F \approx 0.7$~V gives $\gamma \approx 2.0~\mathrm{V}^{1/2}$, consistent within a few percent for both bias points, which corresponds to a channel doping in the low $10^{17}~\mathrm{cm^{-3}}$ range, a plausible value for the surface concentration after the $V_T$-adjust implant.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{Figures/PMOS_9e11_IdVg.png}
+    \includegraphics[width=0.7\linewidth]{Figures/PMOS_9e11_IdVg.png}
     \caption{Simulated PMOS $I_D$--$V_G$ characteristics at $V_D = -0.1$~V for substrate bias $V_\text{Sub} = 0$~V ($V_T$-adjust dose $9 \times 10^{11}$~cm$^{-2}$).}
     \label{fig:pmos-idvg}
 \end{figure}
 
-The PMOS is simulated only at $V_\text{Sub} = 0$~V. Applying the same method with $V_D/2 = -0.05$~V gives a threshold voltage of $V_T = -2.81$~V.
+The PMOS is simulated only at $V_\text{Sub} = 0$~V. The constant-current method gives a threshold voltage of $V_T = -3.91$~V (linear extrapolation is unreliable here because of the sharp curvature of the $I_D$--$V_G$ curve near threshold). This value is quite negative for a CMOS process: even the highest $V_T$-adjust dose of $9\times10^{11}~\mathrm{cm^{-2}}$ does not compensate the N-Well surface enough to bring the PMOS threshold close in magnitude to the NMOS one.
 
 
 
 
 
 \subsection{Device Simulation - 7}
-Figure~\ref{fig:nmos-idvd} shows one curve per gate voltage, so $V_G$ is the parameter that changes from line to line. The curves for $V_G \le 1$~V stay near zero because the device is below threshold ($V_T \approx 1.26$~V). Each conducting curve first rises almost proportionally to $V_{DS}$ (linear region), then flattens once $V_{DS}$ passes the knee at $V_{DS} \approx V_G - V_T$ (saturation region). The knee shifts to higher $V_{DS}$ as $V_G$ increases. For $V_G = 6$ and $7$~V it falls beyond the swept range, so those curves are still rising at $V_{DS} = 5$~V and do not fully saturate.
+Figure~\ref{fig:nmos-idvd} shows one curve per gate voltage, so $V_G$ is the parameter that changes from line to line. The curves for $V_G \le 1$~V stay near zero because the device is below threshold ($V_T \approx 1.39$~V). Each conducting curve first rises almost proportionally to $V_{DS}$ (linear region), then flattens once $V_{DS}$ passes the knee at $V_{DS} \approx V_G - V_T$ (saturation region). The knee shifts to higher $V_{DS}$ as $V_G$ increases; for $V_G = 6$ and $7$~V it falls close to the edge of the swept range, so those curves are still rising at $V_{DS} = 5$~V and do not fully saturate.
 
-The saturation current follows the long-channel square law $I_{D,\text{sat}} \propto (V_G - V_T)^2$. The ratio $I_D/(V_G - V_T)^2$ at $V_{DS} = 5$~V stays close to $2.6 \times 10^{-6}$ over $V_G = 3$ to $7$~V, and the gap between successive curves widens with $V_G$. Velocity saturation would instead make the current linear in $V_G - V_T$, giving roughly equal spacing. That is not seen here. The saturated curves are nearly flat, so channel-length modulation is small. The device
-therefore shows no velocity saturation or other short-channel effects, as expected for its long channel.
+The saturation currents follow the long-channel square law $I_{D,\text{sat}} \propto (V_G - V_T)^2$ to first order: the gap between successive curves widens with $V_G$, as the quadratic dependence predicts. A closer look shows a mild compression at the highest gate voltages: going from $V_G = 3$ to $6$~V roughly doubles the overdrive, so the square law predicts a factor of about 8 in current, while the simulation gives about a factor of 7. This slight sub-quadratic behaviour is the onset of velocity saturation, where the carrier drift velocity begins to saturate at high lateral fields and $I_{D,\text{sat}}$ tends towards a linear dependence on the overdrive. The saturated curves also show a small positive slope, i.e.\ weak channel-length modulation. Both effects are mild here, as expected for a long-channel device; they return much more strongly in the measured $1\,\mu$m devices of Section~\ref{sec:meas}.
 
 \begin{figure}[H]
     \centering
@@ -315,7 +312,7 @@ therefore shows no velocity saturation or other short-channel effects, as expect
 \end{figure}
 
 
-The PMOS characteristics in Figure~\ref{fig:pmos-idvd} show the same behaviour. The linear and saturation regions and the square-law spacing match the NMOS case, and the curves show no short-channel effects. At equal $|V_G|$ the PMOS currents are smaller in magnitude than the NMOS currents, because the hole mobility is lower than the electron mobility and the larger PMOS threshold magnitude ($V_T \approx -2.81$~V) leaves less gate overdrive.
+The PMOS characteristics in Figure~\ref{fig:pmos-idvd} show the same behaviour, mirrored in sign. The linear and saturation regions and the square-law spacing match the NMOS case. At equal $|V_G|$ the PMOS currents are smaller in magnitude than the NMOS currents, because the hole mobility is about a third of the electron mobility and the larger PMOS threshold magnitude ($V_T \approx -3.91$~V) leaves less gate overdrive; the curves for $|V_G| \le 3$~V carry essentially no current because the device is below threshold. The velocity-saturation compression is also less pronounced than in the NMOS, since the lower hole mobility keeps the carriers further from their saturation velocity at the same fields.
 
 \begin{figure}[H]
     \centering
@@ -327,69 +324,68 @@ The PMOS characteristics in Figure~\ref{fig:pmos-idvd} show the same behaviour. 
 
 
 \subsection{Device Simulation - 9}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/PMOS_9e11_dopingAcrossChannel.png}
-    \caption{Simulated PMOS dopant concentration across the channel for a VT-adjust dose of $9\times10^{11}~\mathrm{cm^{-2}}$.}
-    \label{fig:pmos_cross_section}
-\end{figure}
-
-For the PMOS, after changing the the dose from 9e11 at/$\text{cm}^2$ to 3e11 at/$\text{cm}^2$, the two doses give almost identical profiles for the across-source plot, the along-device plot, and the cross section except for the across channel doping concentration. This is expected, since every step up to the source, drain and the N-well runs before the $V_\mathrm{T}$-adjust, so lowering the dose only changes the step comes after it.
-
+After lowering the $V_\mathrm{T}$-adjust dose from $9\times10^{11}$ to $3\times10^{11}\,\mathrm{cm^{-2}}$ and re-running the process simulation, the two doses give almost identical results for the 2D cross-section, the vertical cut through the source, and the horizontal cut along the device; the only visible difference is in the vertical doping profile through the channel. This is expected, since every step that forms the source, drain and N-Well runs before the $V_\mathrm{T}$-adjust implantation, so changing the dose only affects the shallow boron layer at the channel surface. The channel cuts of both devices at the two doses are shown in Figures~\ref{fig:pmos-channel-9e11} to~\ref{fig:nmos-channel-3e11}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/PMOS_3e11_dopingAcrossChannel.png}
-    \caption{Simulated PMOS dopant concentration across the channel for a VT-adjust dose of $3\times10^{11}~\mathrm{cm^{-2}}$.}
-    \label{fig:pmos_cross_section}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/PMOS_9e11_dopingAcrossChannel.png}
+        \caption{PMOS, dose $9\times10^{11}~\mathrm{cm^{-2}}$.}
+        \label{fig:pmos-channel-9e11}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/PMOS_3e11_dopingAcrossChannel.png}
+        \caption{PMOS, dose $3\times10^{11}~\mathrm{cm^{-2}}$.}
+        \label{fig:pmos-channel-3e11}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/NMOS_9e11_dopingAcrossChannel.png}
+        \caption{NMOS, dose $9\times10^{11}~\mathrm{cm^{-2}}$.}
+        \label{fig:nmos-channel-9e11}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Figures/NMOS_3e11_dopingAcrossChannel.png}
+        \caption{NMOS, dose $3\times10^{11}~\mathrm{cm^{-2}}$.}
+        \label{fig:nmos-channel-3e11}
+    \end{subfigure}
+    \caption{Simulated net dopant concentration across the channel of the PMOS and NMOS for the two $V_\mathrm{T}$-adjust doses.}
+    \label{fig:channel-dose-comparison}
 \end{figure}
 
-Similarly, for the NMOS, after changing the the dose from 9e11 at/$\text{cm}^2$ to 3e11 at/$\text{cm}^2$, the two doses give almost identical profiles for the across-source plot, the along-device plot, and the cross section except for the across channel doping concentration as well. 
+For the PMOS, the boron $V_\mathrm{T}$-adjust is implanted into the n-type well, where it compensates the phosphorus donors near the surface. At $9\times10^{11}\,\mathrm{cm^{-2}}$ the net doping shows a clear compensation notch just below the surface, where the boron most closely balances the phosphorus; at $3\times10^{11}\,\mathrm{cm^{-2}}$, one third of the dose, the boron only dents the profile and the notch is absent. Below about $0.5\,\mu\mathrm{m}$ the boron is no longer present and the two profiles coincide.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/NMOS_9e11_dopingAcrossChannel.png}
-    \caption{Simulated NMOS dopant concentration across the channel for a VT-adjust dose of $9\times10^{11}~\mathrm{cm^{-2}}$.}
-    \label{fig:pmos_cross_section}
-\end{figure}
-
-For both devices, the differences between the across channel plots of the two doses are in the near-surface region. More specifically, for the PMOS, the boron $V_\mathrm{T}$-adjust is implanted into the n-type well, where it compensates the phosphorus donors. At $9\times10^{11}\,\mathrm{cm^{-2}}$ the net doping shows a clear compensation notch below the surface, while the notch is absent at the doping concentration of $3\times10^{11}\,\mathrm{cm^{-2}}$. 
-
-And for NMOS, at doping concentration of $9\times10^{11}\,\mathrm{cm^{-2}}$, the boron $V_\mathrm{T}$-adjust raises the net doping to a peak of about $2\times10^{16}\,\mathrm{cm^{-3}}$ within the first $0.2\,\mu\mathrm{m}$, above the $1\times10^{16}\,\mathrm{cm^{-3}}$ substrate background; at $3\times10^{11}\,\mathrm{cm^{-2}}$ the peak is much smaller, about $1.2\times10^{16}\,\mathrm{cm^{-3}}$. Below about $0.5\,\mu\mathrm{m}$ the boron is no longer present and both profiles return to the substrate level. Unlike the PMOS, the $V_\mathrm{T}$-adjust implants boron into a p-type substrate, so the acceptor adds directly to the channel doping instead of compensating a well: the net concentration rises rather than notching, and its excess above the substrate scales with the implanted dose.
-
-For the NMOS the boron is implanted into the p-type substrate, so it adds directly to the channel acceptors, the net doping therefore rises to a peak just below the surface rather than creating a notch, and the peak is larger at $9\times10^{11}\,\mathrm{cm^{-2}}$ than at $3\times10^{11}\,\mathrm{cm^{-2}}$. The height of the peak above this background scales with the implanted dose, below the implanted region the boron is no longer present and both profiles return to the substrate level.
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/NMOS_3e11_dopingAcrossChannel.png}
-    \caption{Simulated NMOS dopant concentration across the channel for a VT-adjust dose of $3\times10^{11}~\mathrm{cm^{-2}}$.}
-    \label{fig:pmos_cross_section}
-\end{figure}
-
-The cause is the boron $V_\mathrm{T}$-adjust, a shallow low-energy implant into the n-type well surface. As an acceptor it partially compensates the phosphorus in the well and lowers the net donor concentration near the surface. The compensation scales with dose, so $9\times10^{11}\,\mathrm{cm^{-2}}$ removes enough net donor to form a local minimum where the boron most closely balances the phosphorus, whereas $3\times10^{11}\,\mathrm{cm^{-2}}$, at one third of the dose, only dents the profile. Below about $0.5\,\mu\mathrm{m}$ the boron is no longer present and the two profiles coincide.
+For the NMOS, the boron is implanted into the p-type substrate, so instead of compensating a well it adds directly to the channel acceptors. The net doping rises to a peak just below the surface: about $2\times10^{16}\,\mathrm{cm^{-3}}$ at $9\times10^{11}\,\mathrm{cm^{-2}}$, well above the $1\times10^{16}\,\mathrm{cm^{-3}}$ substrate background, versus only about $1.2\times10^{16}\,\mathrm{cm^{-3}}$ at $3\times10^{11}\,\mathrm{cm^{-2}}$. The excess above the background scales with the implanted dose, and below about $0.5\,\mu\mathrm{m}$ both profiles return to the substrate level.
 
 
 
 \subsection{Device Simulation - 10 \& 11}
 
+The $I_D$--$V_G$ simulations were repeated at the two lower $V_T$-adjust doses, and the threshold voltages were extracted with the same constant-current method ($|I_D| = 100$~nA). Table~\ref{tab:vt_adjust} gives the resulting overview requested by the manual. The cells at $V_\text{Sub} = -1$ and $-2$~V for the lower doses were not required (the manual marks them X to save simulation time), but our sweep produced them as well, so they are included in parentheses; the PMOS is simulated at $V_\text{Sub} = 0$~V only.
 
 \begin{table}[H]
     \centering
-    \caption{Extracted threshold voltage at the three $V_T$-adjust doses
-    ($V_D = 0.1$~V for NMOS, $-0.1$~V for PMOS).}
+    \caption{Simulated threshold voltage at the three $V_T$-adjust doses, extracted with the constant-current method ($V_D = 0.1$~V for NMOS, $-0.1$~V for PMOS). Values in parentheses were not required by the manual.}
     \label{tab:vt_adjust}
     \begin{tabular}{ l c c c}
         \toprule
-        \textbf{VT-adjust dose} & \textbf{$V_T$ (V) for 3E11} & \textbf{$V_T$ (V) for 6E11} & \textbf{$V_T$ (V) for 9E11} \\
+        \textbf{$V_T$-adjust dose} & \textbf{$V_T$ (V) for 3E11} & \textbf{$V_T$ (V) for 6E11} & \textbf{$V_T$ (V) for 9E11} \\
         \midrule
-        NMOS, $V_{\text{Sub}} = 0\text{ V}$  & 0.77  & 1.03  & 1.26 \\
-        NMOS, $V_{\text{Sub}} = -1\text{ V}$ & X     & X     & 2.17 \\
-        NMOS, $V_{\text{Sub}} = -2\text{ V}$ & X     & X     & 2.78 \\
-        PMOS, $V_{\text{Sub}} = 0\text{ V}$  & -3.23 & -3.00   & -2.81 \\
+        NMOS, $V_{\text{Sub}} = 0\text{ V}$  & 0.905  & 1.162  & 1.385 \\
+        NMOS, $V_{\text{Sub}} = -1\text{ V}$ & (1.695) & (2.013) & 2.339 \\
+        NMOS, $V_{\text{Sub}} = -2\text{ V}$ & (2.264) & (2.622) & 2.966 \\
+        PMOS, $V_{\text{Sub}} = 0\text{ V}$  & -4.372 & -4.372 & -3.907 \\
         \bottomrule
     \end{tabular}
 \end{table}
+
+Two trends stand out. First, the NMOS threshold grows almost linearly with the dose (about $0.08$~V per $10^{11}\,\mathrm{cm^{-2}}$), because the boron adds directly to the acceptor concentration of the lightly doped p-type channel. Second, the PMOS threshold is completely insensitive at the two lower doses and only starts to move at $9\times10^{11}\,\mathrm{cm^{-2}}$. This is consistent with the doping profiles of Device Simulation 9: the boron sheet at the lower doses corresponds to a concentration two orders of magnitude below the donor concentration at the N-Well surface, so it cannot shift the net surface charge noticeably. Only when the boron starts to compensate a significant fraction of the surface donors does the PMOS threshold respond. Both trends confirm the qualitative $V_T$-adjust theory of Section~\ref{sec:tech}: a single boron implantation moves both threshold voltages in the positive direction, raising $|V_T|$ of the NMOS and lowering $|V_T|$ of the PMOS. Finally, the body-effect columns show that the threshold shift with substrate bias grows with dose, as expected from the body-effect coefficient $\gamma \propto \sqrt{N_A}$: more boron means a higher channel doping and a stronger body effect. These simulated thresholds are compared with the measured ones in Section~\ref{sec:meas}.
 
 
 

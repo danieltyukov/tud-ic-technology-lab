@@ -1,12 +1,17 @@
 \setlength{\parindent}{2em}   % 2em first-line indent for all paragraphs
 \setlength{\parskip}{0pt}     % remove extra spacing between paragraphs
 
-\section{Technology Assignment}
+\section{Technology Assignments}
+\label{sec:tech}
+
+This section covers the five preparatory assignments on the BICMOS5 process \cite{et4icp_manual}. They establish the analytical baseline of the report: the alignment-marker step height from the Deal-Grove oxidation model, the choice of gate oxidation, the junction depths of the three implantations, the mask order of the process flow, and the theory of the $V_\mathrm{T}$-adjust implantation. The junction depths calculated here are compared with the Sentaurus simulations in Section~\ref{sec:devsim}, and the $V_\mathrm{T}$-adjust theory is verified by the measurements in Section~\ref{sec:meas}.
+
+\vspace{0.5em}
 \noindent \textbf{Assignment 1: Marker oxidation}
 
-\noindent \textbf{As mentioned above, the waferstepper alignment markers are the first step of the process. For the waferstepper to see this markers with a laser, a step has to be formed in the silicon. A way of forming this step is by performing a double oxidation. Here you will calculate the step height made in the Si wafer during this process.}
+\noindent \textbf{The waferstepper alignment markers are the first step of the process. For the waferstepper to see these markers with a laser, a step has to be formed in the silicon. A way of forming this step is by performing a double oxidation. Here the step height made in the Si wafer during this process is calculated.}
 
-\noindent \textbf{The oxidation rate of silicon is given by the following equation (Deal-Grove model):
+\noindent \textbf{The oxidation rate of silicon is given by the following equation (Deal-Grove model \cite{deal1965general}):
 \begin{align*}
     \frac{dx}{dt} = \frac{B}{2x + A}
 \end{align*}
@@ -18,23 +23,22 @@ where $x$ = oxide thickness, $A$ and $B$ are constants.}
 t = \frac{(x^2 - x_0^2) + A(x - x_0)}{B}
 \]}
 
-From 
+Separating the variables of
 \begin{gather*}
-    \frac{dx}{dt} = \frac{B}{2x + A},
+    \frac{dx}{dt} = \frac{B}{2x + A}
 \end{gather*}
-
-Rewrite the derivative above as
+gives
 \begin{gather*}
     (2x+A)dx = Bdt
 \end{gather*}
 
-Integrate the left side from $x_0$ to $x$ and the right side from $0$ to $t$ respectively
+Integrating the left side from $x_0$ to $x$ and the right side from $0$ to $t$ yields
 \begin{gather*}
     \int_{x_0}^{x} (2x + A)dx = \int_{0}^{t} Bdt \\
     (x^2 - x_0^2) + A(x - x_0) = Bt \\
 \end{gather*}
 
-Therefore,  the solution of this equation for t with $x = x_0$ at $t = 0$ as initial condition is
+Therefore, the solution of this equation for $t$ with $x = x_0$ at $t = 0$ as initial condition is
 \begin{gather*}
     t = \frac{(x^2 - x_0^2) + A(x - x_0)}{B}
 \end{gather*}
@@ -43,34 +47,31 @@ Therefore,  the solution of this equation for t with $x = x_0$ at $t = 0$ as ini
 \noindent \textbf{At 1100$^{\circ}$C the constants are: $B=0.553 \ \mu\mathrm{m}^2/\mathrm{hr}$ and $B/A=3.1695 \ \mu\mathrm{m}/\mathrm{hr}$.} \\[0.5ex]
 \noindent \textbf{b) Calculate the oxide thickness after the first oxidation (time=38.5 min).}
 
-\noindent \textbf{Now a window is etched in the $SiO_2$ to make the marker, as hsown in the figure below, after which another oxidation is performed.}
-\begin{figure}
-\end{figure}
+\noindent \textbf{Now a window is etched in the $SiO_2$ to make the marker, as shown in Figure~\ref{fig:marker-oxidation}, after which another oxidation is performed.}
 
-From $B =0.553$, $\frac{B}{A} =3.1695$ and $A = \frac{B}{\frac{B}{A}} \approx 0.1745$ and $t = 38.5$ min $ \approx 0.6417$ hr and $x_0$ before the first oxidation is 0, 
+From $B =0.553~\mu\mathrm{m^2/hr}$, $\frac{B}{A} =3.1695~\mu\mathrm{m/hr}$, so $A = \frac{B}{B/A} \approx 0.1745~\mu\mathrm{m}$, and with $t = 38.5$ min $ \approx 0.6417$ hr and $x_0 = 0$ before the first oxidation,
 \begin{gather*}
     t = \frac{x^2+Ax}{B} \\
     x^2 + Ax - Bt = 0 \\
     x^2+0.1745x-0.3548=0 \\
 \end{gather*}
 
-This equation gives two roots, which are $x \approx 0.5147$ and $x \approx -0.6893$ (discarded). Therefore, the first oxide thickness is $0.5147 \mu\mathrm{m}$
-
-
+This equation gives two roots, which are $x \approx 0.5147~\mu\mathrm{m}$ and $x \approx -0.6893~\mu\mathrm{m}$ (discarded). Therefore, the first oxide thickness is $0.5147~\mu\mathrm{m}$.
 
 \vspace{0.5em}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/tech_assignment_1_c.png}
-    \label{fig:placeholder}
+    \caption{The double-oxidation sequence used to form the alignment marker: first oxidation, window etch, second oxidation, and full oxide removal.}
+    \label{fig:marker-oxidation}
 \end{figure}
 \noindent \textbf{c) Calculate the oxide thickness after the second oxidation (time=38.5 min) for both the etched and non-etched areas.}
 
 
 
-For the second oxidation, the initial oxide starts from $x_0=0$ for the etched area, so the second oxide thickness for the etched area at 38.5 min is $0.5147 \mu\mathrm{m}$. 
+For the second oxidation, the initial oxide starts from $x_0=0$ for the etched area, so the second oxide thickness for the etched area at 38.5 min is again $0.5147~\mu\mathrm{m}$.
 
-While for the non-etched area, the inital oxide starts from $x_0 = 0.5147 \mu\mathrm{m}$. From
+For the non-etched area, the initial oxide starts from $x_0 = 0.5147~\mu\mathrm{m}$. From
 \begin{gather*}
     t = \frac{(x^2 - x_0^2) + A(x - x_0)}{B} \\
     x^2 + Ax - x_0^2 - Ax_0 - Bt = 0 \\
@@ -78,65 +79,60 @@ While for the non-etched area, the inital oxide starts from $x_0 = 0.5147 \mu\ma
     x^2 + 0.1745x-0.7095=0
 \end{gather*}
 
-Solving the equation above gives two roots, which are $x \approx 0.7596$ and $x=-0.9341$ (discarded). So after another 38.5 min, the oxide thickness for non-etched area is $0.7596 \mu\mathrm{m}$.
+Solving the equation above gives two roots, which are $x \approx 0.7596~\mu\mathrm{m}$ and $x=-0.9341~\mu\mathrm{m}$ (discarded). So after another 38.5 min, the oxide thickness for the non-etched area is $0.7596~\mu\mathrm{m}$.
 
 \vspace{0.5em}
-\noindent \textbf{During oxidation silicon is converted into silicon dioxide. Hence the silicon wafer gets thinner. For a certain thickness of oxide dox the amount of silicon consumed is 0.455dox.}
+\noindent \textbf{During oxidation silicon is converted into silicon dioxide. Hence the silicon wafer gets thinner. For a certain thickness of oxide $d_{ox}$ the amount of silicon consumed is $0.455\,d_{ox}$.}
 
-\noindent \textbf{d) After you remove all the oxide there is a step in the silicon. Calculated the height h of this step (look carefully at the figure above).}
+\noindent \textbf{d) After all the oxide is removed there is a step in the silicon. Calculate the height h of this step (see Figure~\ref{fig:marker-oxidation}).}
 
-For a oxide thickness $d_{ox}$, a thickness of 0.455 $d_{ox}$ of silicon is consumed during the oxidation.
-\begin{gather*}
-d_{si} = 0.455d_{ox}
-\end{gather*}
-
-For the etched area in the second oxidation, the oxide is grown by $0.5147 + 0.5147 = 1.0294 \mu\mathrm{m}$, and for the non-etched area, the oxide thickness is $0.7596 \mu\mathrm{m}$. Then, the height of the step is given by
-\begin{gather*}
-    h = 0.455(1.0294-0.7596) = 0.1228 \mu\mathrm{m}
-\end{gather*}
+For an oxide thickness $d_{ox}$, a silicon thickness of $d_{si} = 0.455\,d_{ox}$ is consumed during the oxidation. In the marker window the silicon is consumed twice, once per oxidation, for a total grown oxide of $0.5147 + 0.5147 = 1.0294~\mu\mathrm{m}$, while in the non-etched area silicon is only consumed up to the final oxide thickness of $0.7596~\mu\mathrm{m}$. After stripping all the oxide, the window therefore sits lower than its surroundings by
+\begin{equation}
+    h = 0.455\,(1.0294-0.7596) \approx 0.123~\mu\mathrm{m},
+    \label{eq:step-height}
+\end{equation}
+so the alignment marker is a recess of about $123$ nm in the silicon surface.
 
 \vspace{0.5em}
 \noindent \textbf{Assignment 2:  Gate oxidation}
 
-\noindent \textbf{As explained above the gate oxide is formed during the anneal which activates the implanted SN and SP areas. It is important that this oxide is of good quality and the thickness is accurate. Moreover, during this oxidation the implanted atoms diffuse, which could cause undesired effects. Explain what kind of oxidation you would choose to perform this step in the BiCMOS5 process (wet or dry oxidation).}
+\noindent \textbf{As explained above the gate oxide is formed during the anneal which activates the implanted SN and SP areas. It is important that this oxide is of good quality and the thickness is accurate. Moreover, during this oxidation the implanted atoms diffuse, which could cause undesired effects. Explain what kind of oxidation you would choose to perform this step in the BICMOS5 process (wet or dry oxidation).}
 
-Dry oxidation should be used for the gate oxide because its slow growth rate allows for precise control and results in a highly dense, uniform silicon dioxide layer.
-
-And because the relatively slower oxidation rate of dry oxidation, it allows the target thickness to be controlled precisely. While for wet oxidation, oxidation is faster and harder to control because water has a higher solubility than O\textsubscript{2} in SiO\textsubscript{2}.
+Dry oxidation should be used for the gate oxide, for two reasons. First, quality: dry oxide is dense and has a low defect density and a clean Si/SiO\textsubscript{2} interface, whereas wet oxide incorporates OH groups that act as interface traps and oxide charge, which would shift the threshold voltage and degrade the channel mobility, exactly the parameters the gate oxide must keep well defined. Second, control: wet oxidation is roughly an order of magnitude faster, because water has a higher solubility than O\textsubscript{2} in SiO\textsubscript{2}, so the slow dry growth lands much more reliably on the $100$~nm target thickness. Dopant diffusion of the implanted SN and SP regions occurs in both cases, but the anneal is short enough that the profiles do not smear out significantly.
 
 
 
 \vspace{0.5em}
 \noindent \textbf{Assignment 3:  Implantation and diffusion}
 
-\noindent \textbf{In total three implantations are used in the BiCMOS process to form the different n and p-type areas. At a place where the concentration of n-type dopants (ND) equals that of p-type dopants ($N_A$) they cancel each other out. At these locations the p-n junctions will be located in the Si, as illustrated in the figure }
+\noindent \textbf{In total three implantations are used in the BICMOS5 process to form the different n and p-type areas. At a place where the concentration of n-type dopants ($N_D$) equals that of p-type dopants ($N_A$) they cancel each other out. At these locations the p-n junctions will be located in the Si, as illustrated in Figure~\ref{fig:junction-def}.}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{Figures/tech_assignment_3.png}
-    \label{fig:placeholder}
+    \caption{Definition of the projected range $R_p$ and junction depth $x_j$: the junction lies where the implanted profile crosses the background doping \cite{et4icp_manual}.}
+    \label{fig:junction-def}
 \end{figure}
-\noindent \textbf{Knowing the depths of these junctions will be required in order to evaluate the electrical measurements performed in chapters 4 and 6. Here you will calculate the junctions depth, and later compare these with the simulations of chapter 3. All implantations with the used accelerartion voltages are listed in the table above. The goal of this exercise is to perform simple calculations in order to approximate the junction depth.}
+\noindent \textbf{Knowing the depths of these junctions is required in order to evaluate the electrical measurements of Sections~\ref{sec:processing} and~\ref{sec:meas}. Here the junction depths are approximated with simple calculations, which are later compared with the simulations of Section~\ref{sec:devsim}. The implantation parameters are: N-Well (P, 150 kV, $6.0\times10^{12}~\mathrm{cm^{-2}}$), SN (As, 40 kV, $5.0\times10^{15}~\mathrm{cm^{-2}}$) and SP (B, 20 kV, $4.0\times10^{14}~\mathrm{cm^{-2}}$).}
 
 \vspace{0.5em}
 \noindent \textbf{a) The first implantation is the N-Well. This implantation is also followed by a 4 hours anneal at 1150$^{\circ}$C to drive the P atoms deeper into the surface. If we ignore the implantation depth, we can approximate this process as a limited source diffusion. At 1150$^{\circ}$C the diffusion constant of phosphorus is $8.86 \times 10^{-13} \ \mathrm{cm^2/s}$. Calculate the peak concentration of the implantation and then the junction depth after diffusion, assuming the silicon wafer has a p-type concentration of $10^{16} \ \mathrm{atoms/cm^3}$.}
 
-From the problem statement, if the implantation depth is ignored, the N-Well implantation can be approximated as a limited source diffusion.
+If the implantation depth is ignored, the N-Well implantation followed by its anneal can be approximated as a limited source diffusion. The approximation is justified because the implanter delivers a fixed dose $Q$ and no source of new dopant atoms is present during the anneal (unlike a doped-oxide constant-source diffusion), so a fixed amount of dopant simply redistributes.
 
-For limited source diffusion, the solution to the diffusion equations is then a Gaussian profilet, which is given by
-\begin{gather*}
-    C(x,t)=\frac{Q}{\sqrt{\pi Dt}}e^{-\frac{x^2}{4Dt}}
-\end{gather*}
+For limited source diffusion, the solution of the diffusion equation is a Gaussian profile,
+\begin{equation}
+    C(x,t)=\frac{Q}{\sqrt{\pi Dt}}e^{-\frac{x^2}{4Dt}},
+    \label{eq:limited-source}
+\end{equation}
+where $C$ is the dopant concentration at depth $x$ after diffusion time $t$, $Q$ the implanted dose, and $D$ the diffusion constant.
 
-From the given data, $Q = 6.0 \times 10^{12} \ \mathrm{cm^{-2}}$, $D = 8.86 \times 10^{-13} \ \mathrm{cm^2/s}$ and $t = 4 \ \mathrm{hr} = 14400 \ \mathrm{s}$
-
-The peak concentration occurs at $x=0$, so
+From the given data, $Q = 6.0 \times 10^{12} \ \mathrm{cm^{-2}}$, $D = 8.86 \times 10^{-13} \ \mathrm{cm^2/s}$ and $t = 4 \ \mathrm{hr} = 14400 \ \mathrm{s}$. The peak concentration occurs at $x=0$, so
 \begin{gather*}
     C_{max}=\frac{Q}{\sqrt{\pi Dt}} \\
     C_{max}=\frac{6.0 \times 10^{12}}{\sqrt{\pi(8.86 \times 10^{-13})(14400)}} \approx 2.997 \times 10^{16} \ \mathrm{cm^{-3}}
 \end{gather*}
 
-From the problem statement, assume that silicon wafer has a p-type concentration
-of $10^{16}$ atoms/cm$^3$, the junction depth is where the phosphorus concentration equals the background p-type concentration:
+With the substrate p-type concentration of $10^{16}$ atoms/cm$^3$ given in the problem statement, the junction depth is where the phosphorus concentration equals the background p-type concentration:
 \begin{gather*}
     C(x,t)=1.0 \times 10^{16} \ \mathrm{cm^{-3}} \\
     1.0 \times 10^{16} = 2.997 \times 10^{16}e^{-\frac{x^2}{4Dt}}
@@ -155,22 +151,26 @@ Substitute the values:
     \ln \left(\frac{1.0 \times 10^{16}}{2.997 \times 10^{16}}\right)} \approx 2.367 \times 10^{-4} \ \mathrm{cm} = 2.367 \ \mu\mathrm{m}
 \end{gather*}
 
-Therefore, the N-Well junction depth is approximately 2.367 $\mu\mathrm{m}$
+Therefore, the N-Well junction depth is approximately $2.37~\mu\mathrm{m}$.
 
 
 \vspace{0.5em}
 \noindent \textbf{b) The second implantation is the SN and is performed using As in the p-type Si substrate with a concentration of $10^{16}$ boron atoms/cm$^3$. Assuming a Gaussian implantation profile, a projected range ($R_p$) of $0.0314 \ \mu\mathrm{m}$, and straggle ($\Delta R_p$) of $0.0114 \ \mu\mathrm{m}$, calculate the junction depth of the SN implantation using the Gaussian implantation distribution.}
 
-If assume a Gaussian implantation profile, the distribution of the dopant atoms in the silicon is given by the approximation equation below
-\begin{gather*}
-    N(x)=\frac{Q}{\sqrt{2\pi}\Delta R_p}e^{-\frac{(x-R_p)^2}{2\Delta R_p^2}}
-\end{gather*}
+Assuming a Gaussian implantation profile, the distribution of the dopant atoms in the silicon is approximated by
+\begin{equation}
+    N(x)=\frac{Q}{\sqrt{2\pi}\Delta R_p}e^{-\frac{(x-R_p)^2}{2\Delta R_p^2}},
+    \label{eq:gauss-implant}
+\end{equation}
+where $N$ is the dopant concentration at depth $x$, $Q$ the implanted dose, $R_p$ the projected range and $\Delta R_p$ the straggle.
 
 From the given data, $Q = 5.0 \times 10^{15} \ \mathrm{cm^{-2}}$, $R_p = 0.0314 \ \mu\mathrm{m}$ and $\Delta R_p = 0.0114 \ \mu\mathrm{m} = 1.14 \times 10^{-6} \ \mathrm{cm}$, the peak concentration is
 \begin{gather*}
-    N_{max}=\frac{Q}{\sqrt{2\pi}\Delta R_p} \\
-    N_{max}=\frac{5.0 \times 10^{15}}{\sqrt{2\pi}(1.14 \times 10^{-6})}  N_{max} \approx 1.75 \times 10^{21} \ \mathrm{cm^{-3}}
+    N_{max}=\frac{Q}{\sqrt{2\pi}\Delta R_p}
+    =\frac{5.0 \times 10^{15}}{\sqrt{2\pi}(1.14 \times 10^{-6})} \approx 1.75 \times 10^{21} \ \mathrm{cm^{-3}}
 \end{gather*}
+
+This peak is above the solid solubility of arsenic at the anneal temperature, so in reality part of the dose will not be electrically active; this is one of the simplifications of the analytical model.
 
 The junction depth is where the arsenic concentration equals the background boron concentration:
 \begin{gather*}
@@ -194,22 +194,12 @@ This equation gives two roots, which are $x \approx 0.0874 \ \mu\mathrm{m}$ and 
 \vspace{0.5em}
 \noindent \textbf{c) Finally, the SP implantation is done using B. This implantation is performed inside the N-Well, of which you can assume that around the junction the doping concentration is $2 \times 10^{16}$ phosphorus atoms/cm$^3$. Given that $R_p = 0.0685 \ \mu\mathrm{m}$ and $\Delta R_p = 0.0296 \ \mu\mathrm{m}$, calculate the depth of this junction.}
 
-For the SP implantation, the Gaussian implantation profile is again used:
-\begin{gather*}
-    N(x)=\frac{Q}{\sqrt{2\pi}\Delta R_p}
-    e^{-\frac{(x-R_p)^2}{2\Delta R_p^2}}
-\end{gather*}
+For the SP implantation, the Gaussian implantation profile of Equation~\eqref{eq:gauss-implant} is used again.
 
-From the given data, $Q = 4.0 \times 10^{14} \ \mathrm{cm^{-2}}$, $R_p = 0.0685 \ \mu\mathrm{m}$ and $\Delta R_p = 0.0296 \ \mu\mathrm{m}$, and convert $\Delta R_p$ from $\mu\mathrm{m}$ to cm:
+From the given data, $Q = 4.0 \times 10^{14} \ \mathrm{cm^{-2}}$, $R_p = 0.0685 \ \mu\mathrm{m}$ and $\Delta R_p = 0.0296 \ \mu\mathrm{m} = 2.96 \times 10^{-6} \ \mathrm{cm}$, the peak concentration is
 \begin{gather*}
-    \Delta R_p = 0.0296 \times 10^{-4} \ \mathrm{cm}
-    = 2.96 \times 10^{-6} \ \mathrm{cm}
-\end{gather*}
-
-The peak concentration is
-\begin{gather*}
-    N_{max}=\frac{Q}{\sqrt{2\pi}\Delta R_p} \\
-    N_{max}=\frac{4.0 \times 10^{14}}
+    N_{max}=\frac{Q}{\sqrt{2\pi}\Delta R_p}
+    =\frac{4.0 \times 10^{14}}
     {\sqrt{2\pi}(2.96 \times 10^{-6})} \approx 5.39 \times 10^{19} \ \mathrm{cm^{-3}}
 \end{gather*}
 
@@ -223,13 +213,6 @@ Thus,
     2.0 \times 10^{16}
     =
     5.39 \times 10^{19}
-    e^{-\frac{(x-R_p)^2}{2\Delta R_p^2}}
-\end{gather*}
-
-Rearrange the equation:
-\begin{gather*}
-    \frac{2.0 \times 10^{16}}{5.39 \times 10^{19}}
-    =
     e^{-\frac{(x-R_p)^2}{2\Delta R_p^2}} \\
     \ln\left(\frac{2.0 \times 10^{16}}{5.39 \times 10^{19}}\right)
     =
@@ -238,38 +221,61 @@ Rearrange the equation:
     \ln\left(\frac{2.0 \times 10^{16}}{5.39 \times 10^{19}}\right)}
 \end{gather*}
 
+Substituting the values gives
+\begin{gather*}
+    x = 0.0685 + 0.0296\sqrt{2\ln\left(\frac{5.39 \times 10^{19}}{2.0 \times 10^{16}}\right)}
+    = 0.0685 + 0.118 \approx 0.186 \ \mu\mathrm{m}
+\end{gather*}
 
+Therefore, the SP junction depth is approximately $0.186~\mu\mathrm{m}$. Table~\ref{tab:ch2-xj-summary} summarizes the three analytical junction depths; they are compared with the process simulations in Section~\ref{sec:devsim}.
+
+\begin{table}[H]
+    \centering
+    \caption{Summary of the analytically calculated peak concentrations and junction depths.}
+    \label{tab:ch2-xj-summary}
+    \begin{tabular}{lccc}
+        \toprule
+        Implantation & Dopant & $N_{max}$ ($\mathrm{cm^{-3}}$) & $x_j$ ($\mu\mathrm{m}$) \\
+        \midrule
+        N-Well & P  & $3.0 \times 10^{16}$ & $2.37$ \\
+        SN     & As & $1.75 \times 10^{21}$ & $0.087$ \\
+        SP     & B  & $5.39 \times 10^{19}$ & $0.186$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \vspace{0.5em}
-\noindent \textbf{Assignment 4:   BICMOS process flow}
+\noindent \textbf{Assignment 4: BICMOS process flow}
 
-\noindent \textbf{On the next page you see 5 parts of the masks from the BICMOS process. Put the masks in the right processing order and indicate which number corresponds to which process step (e.g. mask 4 is SP mask).}
+\noindent \textbf{Five parts of the masks from the BICMOS process are shown in Figure~\ref{fig:mask-order}. Put the masks in the right processing order and indicate which number corresponds to which process step (e.g. mask 4 is the SP mask).}
 
-As mask 4 is SP mask, mask 1 is IC mask, mask 2 is CO mask, mask3 is SN mask, mask 5 is NW mask, the processing order is 5 (NW) $\rightarrow$ 3 (SN) $\rightarrow$ 4 (SP) $\rightarrow$ 2 (CO) $\rightarrow$ 1 (IC)
+The five core masks of the BICMOS5 process are applied in the order NW $\rightarrow$ SN $\rightarrow$ SP $\rightarrow$ CO $\rightarrow$ IC: first the deep N-Well is formed, then the shallow n$^{+}$ and p$^{+}$ source/drain implantations, then the contact openings are etched in the gate oxide, and finally the aluminium interconnect is patterned. Matching the five PMOS top views of Figure~\ref{fig:mask-order} to this order: mask 3 is the NW mask (the large filled well area), mask 5 is the SN mask (the n$^{+}$ guard-ring/well-contact outline), mask 4 is the SP mask (the p$^{+}$ source/drain stripes inside the well), mask 2 is the CO mask (the small contact openings), and mask 1 is the IC mask (the metal wiring with the SU, G, S and D pads). The processing order of the figures is therefore 3 (NW) $\rightarrow$ 5 (SN) $\rightarrow$ 4 (SP) $\rightarrow$ 2 (CO) $\rightarrow$ 1 (IC).
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{Figures/tech_assignment_4.png}
-    \label{fig:placeholder}
+    \caption{The five mask parts of the BICMOS5 process for a PMOS device, to be placed in processing order \cite{et4icp_manual}.}
+    \label{fig:mask-order}
 \end{figure}
 
 \vspace{0.5em}
 \noindent \textbf{Assignment 5: $V_T$-adjust}
 
-\noindent \textbf{Find the equations which describes the relation between the $V_T$ and the doping levels in the channel for a PMOS and NMOS in literature, and explain why a boron implantation over the whole wafer works as a $V_T$ adjustment for both devices. What happens to threshold voltage of the NMOS when the $VT$-adjust dose is increased? And for the PMOS?}
+\noindent \textbf{Find the equations which describe the relation between the $V_T$ and the doping levels in the channel for a PMOS and NMOS in literature, and explain why a boron implantation over the whole wafer works as a $V_T$ adjustment for both devices. What happens to the threshold voltage of the NMOS when the $V_T$-adjust dose is increased? And for the PMOS?}
 
-For NMOS with a channel acceptor concentration of $N_A$, relation between the $V_T$ and the doping levels in the
-channel is given by
+For an NMOS with a channel acceptor concentration $N_A$, the relation between $V_T$ and the doping level in the channel is given by \cite{sze2007physics}
 \begin{equation}
 V_{T} = V_{FB} + 2\phi_F + \frac{1}{C_{ox}}\sqrt{2\varepsilon_s\, q\, N_A \cdot 2\phi_F}
 \label{eq:vt_nmos}
 \end{equation}
 
-For PMOS with a donor concentration of $N_D$, the relation is
+For a PMOS with a donor concentration $N_D$, the relation is
 \begin{equation}
 V_{T} = V_{FB} - 2|\phi_F| - \frac{1}{C_{ox}}\sqrt{2\varepsilon_s\, q\, N_D \cdot 2|\phi_F|}
 \label{eq:vt_pmos}
 \end{equation}
 
-Boron is a p-type dopant.  The implant adds $N_A$ near the surface of the wafer. Therefore, for NMOS channel, boron adds to the existing acceptor concentration, $N_A$ increases, so $V_T$ becomes larger (NMOS becomes harder to turn on). While for PMOS channel, boron compensates the donors, $N_D$ decreases, so $|V_T|$ decreases ($V_T$ shifts toward zero). Therefore, boron implantation increases magnitude of $V_T$ for NMOS and decreases the magnitude of $V_T$ for PMOS so that NMOS and PMOS device could have threshold voltages which are similar in magnitude.
+In Equations~\eqref{eq:vt_nmos} and~\eqref{eq:vt_pmos}, $V_{FB}$ is the flat-band voltage, $\phi_F = (kT/q)\ln(N/n_i)$ the Fermi potential of the channel with doping $N$ and intrinsic concentration $n_i$, $C_{ox}$ the gate-oxide capacitance per unit area, $\varepsilon_s$ the permittivity of silicon and $q$ the elementary charge. The square-root term is the depletion charge that the gate must image before inversion.
+
+Boron is a p-type dopant, and because the $V_T$-adjust implantation is performed without a mask, it adds a shallow sheet of acceptors near the surface in every channel on the wafer. In the NMOS channel the boron adds to the existing acceptor concentration, so $N_A$ increases and $V_T$ becomes more positive: the NMOS becomes harder to turn on. In the PMOS channel the boron partially compensates the donors, so the effective $N_D$ decreases and $V_T$ shifts towards zero: the PMOS becomes easier to turn on. A single boron implantation therefore increases the threshold magnitude of the NMOS and decreases that of the PMOS at the same time, which is exactly what is needed to give both devices threshold voltages of similar magnitude. Increasing the dose strengthens both effects, which is verified by the simulations in Section~\ref{sec:devsim} and the measurements in Section~\ref{sec:meas}.
 
 \newpage

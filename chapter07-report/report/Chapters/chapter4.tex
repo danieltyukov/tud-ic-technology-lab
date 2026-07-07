@@ -1,15 +1,18 @@
-\section{Processing assignments}
-\subsection{Doping Concentration}
+\section{Processing Assignments}
+\label{sec:processing}
 
-The sheet resistance of the three implanted wafers was measured with the four-point-probe equipment. The measurement results including the average value, the standard deviation and the distribtuion range are listed in Table~\ref{tab:ch4-rsheet}.
+The processing part of the course took place in the class-100 cleanroom of the Else Kooi Laboratory. Three groups of assignments were carried out: in-line sheet resistance measurements on the implanted monitor wafers to determine the doping concentrations, oxide deposition with thickness and etch-rate measurements, and the patterning of the aluminium interconnect layer of a BICMOS5 wafer by wet and dry etching.
+
+\subsection{Doping Concentration}
+The sheet resistance of the three implanted monitor wafers was measured with the CDE ResMap four-point probe over a ten-point scan. The results, including the average value, the standard deviation and the spread across the wafer, are listed in Table~\ref{tab:ch4-rsheet}.
 
 \begin{table}[htbp]
   \centering
-  \caption{Sheet resistance of the N-Well, SN and SP wafers, measured with the four-point probe equipment}
+  \caption{Sheet resistance of the N-Well, SN and SP wafers, measured with the four-point probe equipment.}
   \label{tab:ch4-rsheet}
   \begin{tabular}{lrrr}
     \toprule
-    Wafer & $R_\mathrm{s}$ (\si{\ohm/\sq}) & Std.\ dev.\ (\si{\ohm/\sq}) & Range (\si{\ohm/\sq}) \\
+    Wafer & $R_\mathrm{s}$ ($\Omega/\square$) & Std.\ dev.\ ($\Omega/\square$) & Range ($\Omega/\square$) \\
     \midrule
     N-Well & 1488.8 & 10.9 & 1471--1507 \\
     SN     &   57.4 &  0.99 & 55.7--58.6 \\
@@ -18,16 +21,17 @@ The sheet resistance of the three implanted wafers was measured with the four-po
   \end{tabular}
 \end{table}
 
-The junction depths of the NW, SN and SP obtained in the simulation results in Chapter 3  are 2.085, 0.537 and 0.594 respectively.
+The ordering of the three values follows directly from the doping levels: the lightly doped N-Well has the highest sheet resistance even though it is the deepest layer, the arsenic SN layer is doped up to the solid solubility limit and has the lowest, and the boron SP layer sits in between because boron reaches a lower active concentration and a lower mobility than arsenic.
 
-As the sheet resistance and the junction depth together give the depth-averaged resistivity of each layer
-\begin{gather*}
+The junction depths of the N-Well, SN and SP obtained from the simulations in Section~\ref{sec:devsim} are 2.085, 0.537 and 0.594 $\mu\mathrm{m}$ respectively. The sheet resistance and the junction depth together give the depth-averaged resistivity of each layer:
+\begin{equation}
   R_\mathrm{s} = \frac{\rho}{x_\mathrm{j}}
   \quad\Longrightarrow\quad
   \rho = R_\mathrm{s}\,x_\mathrm{j}.
-\end{gather*}
+  \label{eq:rs-irvin}
+\end{equation}
 
-The average active dopant concentration is read from the Irvin curve for the corresponding carrier type at the calculated resistivity. The results are listed in Table~\ref{tab:ch4-conc}.
+The average active dopant concentration $N$ is then read from the Irvin curve for the corresponding carrier type at the calculated resistivity \cite{et4icp_manual}. The results are listed in Table~\ref{tab:ch4-conc}.
 
 \begin{table}[htbp]
   \centering
@@ -36,7 +40,7 @@ The average active dopant concentration is read from the Irvin curve for the cor
   \label{tab:ch4-conc}
   \begin{tabular}{cccc}
     \toprule
-    Layer & $\rho = R_\mathrm{s}\,x_\mathrm{j}$ & Type & $N$ \\
+    Layer & $\rho = R_\mathrm{s}\,x_\mathrm{j}$ ($\Omega\,\mathrm{cm}$) & Type & $N$ ($\mathrm{cm^{-3}}$) \\
     \midrule
     N-Well & $0.31$              & n & $N_\mathrm{D} \approx 1.5\times10^{16}$ \\
     SN     & $3.1\times10^{-3}$  & n & $N_\mathrm{D} \approx 2\times10^{19}$   \\
@@ -45,15 +49,15 @@ The average active dopant concentration is read from the Irvin curve for the cor
   \end{tabular}
 \end{table}
 
-These dopant concentration values are averaged over the diffused profile, so they fall below the simulated peak concentrations from Chapter 3 as expected.
+These dopant concentration values are averaged over the diffused profile, so they fall below the simulated peak concentrations from Section~\ref{sec:procsim}, as expected: the SN average sits about an order of magnitude below its solid-solubility-clipped peak of $1.8\times10^{20}\,\mathrm{cm^{-3}}$, which is normal for a steeply graded junction, while the flatter N-Well and SP profiles give averages close to the simulated levels. These three concentrations are used again for comparison with the Van der Pauw measurements in Section~\ref{sec:meas}.
 
 
-\subsection{Oxide deposition, Thickness Measurements and Etch Rate}
-Two silicon wafers were oxidized, one by wet oxidation and the other by PECVD at a low temperature of $350$–$400\,^\circ$C. The thickness of both oxide layers was measured with the reflectometer. The measured oxide thicknesses and the uniformity of both depositions are listed in Table~\ref{tab:ch4-oxide}.
+\subsection{Oxide Deposition, Thickness Measurements and Etch Rate}
+Two silicon wafers received an oxide layer: one grown by wet (thermal) oxidation and one deposited by PECVD from TEOS at a low temperature of $350$ to $400\,^\circ$C. The thickness of both oxide layers was measured optically at five points per wafer, before and after a 20 s dip in buffered HF (BHF, 1:7). The measured oxide thicknesses and the uniformity of both depositions are listed in Table~\ref{tab:ch4-oxide}; the range column gives the spread (maximum minus minimum) over the five measurement points.
 
 \begin{table}[htbp]
   \centering
-  \caption{Oxide thickness and uniformity before and after etching}
+  \caption{Oxide thickness and uniformity before and after 20 s etching in BHF (1:7).}
   \label{tab:ch4-oxide}
   \begin{tabular}{cccccc}
     \toprule
@@ -67,39 +71,59 @@ Two silicon wafers were oxidized, one by wet oxidation and the other by PECVD at
   \end{tabular}
 \end{table}
 
-Before etching, the oxide layer produced by wet oxidation is more uniform than that produced by PECVD. The oxida thickness prodcued by wet oxidation varies by $1.54$ nm across the wafer, while the PECVD film varies by $5.65$ nm, roughly four times as much. This is because wet oxidation grows the oxide more slowly where the oxide layer is thicker, which makes the layer more uniform. In contrast, the PECVD thickness depends on gas flow and plasma density in the chamber, which vary from point to point.
+Before etching, the oxide layer produced by wet oxidation is more uniform than that produced by PECVD. The oxide thickness produced by wet oxidation varies by $1.54$ nm across the wafer, while the PECVD film varies by $5.65$ nm, roughly four times as much. This is because thermal oxidation is rate-limited by oxidant diffusion through the already-grown oxide: it grows more slowly where the layer is thicker, which levels the layer. In contrast, the PECVD thickness follows the gas flow and plasma density patterns in the chamber, which vary from point to point.
 
 After etching, the uniformity became worse for both wafers, and worse for PECVD than for wet oxidation. The spread grew from $1.54$ to $8.09$ nm for wet oxidation, and from $5.65$ to $20.25$ nm for PECVD.
 
-The etch rate is calculated from the removed thickness during the 20s etch time in Buffered HF.
-\begin{gather*}
+The etch rate is calculated from the removed thickness during the 20 s etch in buffered HF:
+\begin{equation}
   r_\mathrm{wet} = \frac{34.1}{20} = 1.71~\mathrm{nm/s},
   \qquad
-  r_\mathrm{PECVD} = \frac{110.6}{20} = 5.53~\mathrm{nm/s}.
-\end{gather*}
-which indicates that PECVD oxide is etched at a rate about $3.2$ times faster than wet oxidation. The difference comes from film density. The wet oxide is grown above $1000\,^\circ$C by consuming the silicon itself, so it is dense and fully bonded. The PECVD oxide is deposited at low temperature from TEOS. It is less dense and more porous, and it still holds $\mathrm{Si\text{-}OH}$ groups and water. BHF moves through this open film quickly and attacks the weaker bonds, so the etch runs faster. A densification anneal after deposition would lower the PECVD etch rate.
+  r_\mathrm{PECVD} = \frac{110.6}{20} = 5.53~\mathrm{nm/s},
+  \label{eq:etch-rates}
+\end{equation}
+which shows that the PECVD oxide is etched about $3.2$ times faster than the thermal oxide. The thermal value matches the literature BHF (1:7) etch rate for thermal SiO$_2$ of roughly $1.5$ to $2$ nm/s. The difference comes from film density. The wet oxide is grown above $1000\,^\circ$C by consuming the silicon itself, so it is dense, stoichiometric and fully bonded. The PECVD oxide is deposited at low temperature from TEOS: it is less dense and more porous, and it still holds $\mathrm{Si\text{-}OH}$ groups and water. BHF moves through this open film quickly and attacks the weaker bonds, so the etch runs faster and less evenly. A densification anneal after deposition would lower the PECVD etch rate towards the thermal value, which is the usual industrial fix.
 
 
 Therefore, compared to PECVD deposition, wet oxidation gives a dense and uniform oxide layer. Its main disadvantage is that it operates at a high temperature, which adds to the thermal budget and drives further diffusion of the dopants already in the wafer. It also consumes silicon as it grows, and it only grows on exposed silicon, so it cannot be used over metal.
 
-While for PECVD, it operates at a low temperature, and it can be deposited over metal and other finished layers, and it coats any surface. Its disadvantage is that it has a lower film quality. The oxide is less dense and more porous, which leads to a less uniform oxide layer has more defects.
+PECVD, on the other hand, operates at a low temperature, can be deposited over metal and other finished layers, and coats any surface. Its disadvantage is the lower film quality: the oxide is less dense and more porous, which leads to a less uniform layer with more defects and trapped charge.
 
 For the gate oxide, wet oxidation is the right choice. The gate dielectric sits directly under the channel, so interface-trap density, leakage and breakdown all matter, and only a grown thermal oxide gives a clean $\mathrm{Si}/\mathrm{SiO_2}$ interface. PECVD is more suitable for layers where temperature is the limiting constraint, such as inter-metal dielectric and passivation over aluminium. Among thermal oxides, dry oxidation is preferred over wet for the gate because it is denser and more controllable, but between the two methods used here wet oxidation is clearly the one to use.
 
 
 \subsection{CMOS Wafer Metal Etching and Etching Selectivity}
-A BICMOS wafer processed up to the aluminium layer was used to pattern the IC mask. One wafer was etched wet in phosphoric acid at $35\,^\circ$C, the other dry in a Cl/HBr plasma. Both were checked under the microscope.
+Two BICMOS5 wafers processed up to the $0.2\,\mu$m aluminium layer were used to pattern the IC mask. One wafer was etched wet in phosphoric acid at $35\,^\circ$C, the other dry in a Cl/HBr plasma. Both were inspected under the optical microscope; representative images are shown in Figure~\ref{fig:etch-comparison}.
 
-The pattern after lithography shows the contact openings and metal lines line up with the underlying devices, so the lithography was good enough to proceed to the etch.
+The pattern after lithography shows the contact openings and metal lines lining up with the underlying devices, so the lithography was good enough to proceed to the etch.
 
-After the aluminium is etched away, the metal surface looks rough and grainy rather than smooth and reflective. This roughness comes from the $1\%$ silicon in the aluminium alloy, which is added to prevent spiking: phosphoric acid etches the aluminium but leaves this silicon behind. The poly-Si dip removes it.
+After the aluminium is etched away (visible as a colour change from shiny to grey), the surface looks rough and grainy rather than smooth and reflective. This roughness comes from the $1\%$ silicon in the aluminium alloy, which is added to prevent spiking: phosphoric acid etches the aluminium but leaves the silicon behind as small grains. The subsequent poly-Si dip in HNO$_3$-HF removes them.
 
-The wet etch is isotropic. The acid etches sideways under the resist as well as downwards, so the metal edges look rough and less defined.
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{Figures/wetetch_metal_lines_100x.jpg}
+    \caption{Wet etch, metal lines at 100$\times$.}
+    \label{fig:wet-etch}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.49\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{Figures/dryetch_comb_lines_50x.jpg}
+    \caption{Dry etch, comb structure at 50$\times$.}
+    \label{fig:dry-etch}
+  \end{subfigure}
+  \caption{Microscope images of the aluminium pattern after wet etching (left) and dry etching (right). The wet-etched lines are narrowed and rounded by the isotropic underetch and the exposed field oxide keeps its blue/violet colour, while the dry-etched lines hold their drawn width with straight edges over a brown/grey (thinned) field oxide.}
+  \label{fig:etch-comparison}
+\end{figure}
 
-The dry etch is anisotropic. The directional ion bombardment etches downwards mainly rather than sideways, so the edges stay straight and the narrow lines keep a clean, well-defined shape.
+The wet etch is isotropic: the acid etches sideways under the resist at the same rate as downwards, so the metal edges become rounded and less defined and the lines end up visibly narrower than drawn (Figure~\ref{fig:wet-etch}).
 
-In the wet-etched wafer the field is blue/violet, the colour of about $100$ nm of $\mathrm{SiO_2}$, so the oxide is essentially untouched. Phosphoric acid does not attack oxide, so with the $0.2\,\mu$m aluminium removed against almost no oxide loss, the aluminium-to-oxide selectivity is very high.
+The dry etch is anisotropic: the directional ion bombardment etches mainly downwards rather than sideways, so the edges stay straight and even the narrow comb lines keep a clean, well-defined shape at their full mask width (Figure~\ref{fig:dry-etch}).
 
-In the dry-etched wafer the field is brown/grey, the colour of a thinner oxide, so part of the $\mathrm{SiO_2}$ has been removed. The plasma erodes $\mathrm{SiO_2}$ as well as aluminium through physical bombardment, so the selectivity is much lower.
+The field oxide started at approximately $100$ nm. In the wet-etched wafer the field is blue/violet, the interference colour of about $100$ nm of $\mathrm{SiO_2}$, so the oxide is essentially untouched. Phosphoric acid does not attack oxide, so with the $0.2\,\mu$m of aluminium removed against at most a few nanometres of oxide loss, the aluminium-to-oxide selectivity is very high, effectively better than 100:1.
 
-Wet etching is therefore the more selective process, since it removes almost no oxide. Its disadvantage is poor dimensional control from the sideways undercut. Dry etching gives more straight, more accurately sized lines at the cost of eroding the underlying oxide.
+In the dry-etched wafer the field is brown/grey, the interference colour of a clearly thinner oxide, so a substantial part of the $100$ nm $\mathrm{SiO_2}$ has been removed. The plasma erodes $\mathrm{SiO_2}$ as well as aluminium through its physical bombardment component, so the selectivity is far lower, on the order of 10:1 to 20:1.
+
+Wet etching is therefore the more selective process, since it removes almost no oxide. Its disadvantages are the poor dimensional control caused by the sideways undercut, which rules out fine-pitch patterns, and the need for good resist adhesion to avoid delamination during the underetch. Dry etching gives straight, accurately sized lines at the cost of eroding the underlying oxide, and it requires careful endpoint control; in addition, the plasma hardens the photoresist, which must then be removed in an oxygen plasma instead of acetone. This is the classic trade-off between selectivity and dimensional control in wet versus dry processing.

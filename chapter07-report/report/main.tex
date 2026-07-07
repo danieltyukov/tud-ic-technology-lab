@@ -9,7 +9,6 @@
 \usepackage{multirow}
 \usepackage{color}
 \usepackage{adjustbox}
-\usepackage{todonotes}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -55,10 +54,11 @@
 \usepackage{fancyhdr}         % for headers/footers
 \pagestyle{fancy}
 \fancyhead[L]{ET4ICP IC-Technology Lab}
-\fancyhead[R]{Q4 2025–2026}
+\fancyhead[R]{Q4 2025-2026}
 \fancyfoot[C]{\thepage}
 
 \usepackage{hyperref}
+\hypersetup{hidelinks}
 \usepackage[utf8]{inputenc}
 \usepackage{subcaption}
 \definecolor{mygreen}{RGB}{28,172,0} 
@@ -110,12 +110,11 @@
 \input{Chapters/chapter2}
 \input{Chapters/chapter3}
 \input{Chapters/chapter4}
-%\input{Chapters/chapter6}
-\input{Chapters/chapter7}
+\input{Chapters/chapter6}
 \input{Chapters/conc}
-\bibliographystyle{unsrt}  % use unsorted style
-%\bibliography{references}
 
 \newpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 
 \end{document}
