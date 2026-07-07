@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage{soul}
+\usepackage{xcolor}
+
+\usepackage[utf8]{inputenc}
+%\usepackage{hyperref}
+\usepackage[english]{babel}
+\usepackage{indentfirst}      % indent first paragraph after section
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{adjustbox}
+\usepackage{todonotes}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{parskip}
+\usepackage{subfiles}
+\usepackage[toc,page]{appendix}
+\usepackage{graphicx}
+\usepackage{tocloft}
+\usepackage{titlepic}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{cite}
+\usepackage[utf8]{inputenc}
+\usepackage{tabu}
+\usepackage{amsfonts}
+\usepackage{soul}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage[nottoc]{tocbibind}
+\usepackage{filecontents}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{epstopdf}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{gensymb}
+\usepackage[compact]{titlesec}
+\usepackage{fancyvrb}
+\usepackage{eurosym}
+\usepackage{soul}
+\usepackage{longtable}
+\usepackage[margin=1in]{geometry}
+\pagestyle{plain}
+%\usepackage[a4paper, total={7in, 10in}]{geometry}  Dit is voor mee text p.pag
+
+\usepackage{fancyhdr}         % for headers/footers
+\pagestyle{fancy}
+\fancyhead[L]{ET4ICP IC-Technology Lab}
+\fancyhead[R]{Q4 2025–2026}
+\fancyfoot[C]{\thepage}
+
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{subcaption}
+\definecolor{mygreen}{RGB}{28,172,0} 
+\definecolor{mylilas}{RGB}{170,55,241}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\renewcommand\tabularxcolumn[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+\newcounter{question}[section]
+\newcommand{\question}[1]{%
+    \vspace{1.5ex plus 0.5ex minus 0.2ex}\par % Space before the question
+    \stepcounter{question}%
+    \noindent\textbf{\thesection.\thequestion\quad #1}\par
+    \vspace{1ex plus 0.2ex} % Space after the question
+}
+
+\begin{document}
+\lstset{language=Matlab,
+	basicstyle = \scriptsize,
+    breaklines=true,
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle={\small \color{black}},
+    numbersep=9pt, 
+    emph=[1]{for,end,break},emphstyle=[1]\color{red},   
+}
+
+
+\pagenumbering{gobble}
+\input{General/Titlepage.tex}
+
+\newpage
+\tableofcontents\thispagestyle{empty}
+
+\newpage
+\pagenumbering{arabic}   % start normal numbering from 1
+
+\input{Chapters/intro}
+\input{Chapters/chapter2}
+\input{Chapters/chapter3}
+\input{Chapters/chapter4}
+%\input{Chapters/chapter6}
+\input{Chapters/chapter7}
+\input{Chapters/conc}
+\bibliographystyle{unsrt}  % use unsorted style
+%\bibliography{references}
+
+\newpage
+
+\end{document}
