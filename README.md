@@ -1,12 +1,5 @@
 # ET4icp: IC Technology Practical Course
 
-![Course](https://img.shields.io/badge/TU%20Delft-ET4icp-00A6D6)
-![Lab](https://img.shields.io/badge/Else%20Kooi%20Laboratory-cleanroom-555)
-![Process](https://img.shields.io/badge/process-BICMOS5-blue)
-![Chapters](https://img.shields.io/badge/chapters%201--6-complete-brightgreen)
-![Report](https://img.shields.io/badge/final%20report-in%20progress-yellow)
-![Tools](https://img.shields.io/badge/Sentaurus%20·%20MATLAB%20·%20Python-informational)
-
 Full lab record for ET4icp (IC Technology Practical Course) at TU Delft, run in the Else Kooi
 Laboratory (EKL). The course fabricates NMOS and PMOS transistors in the BICMOS5 process and
 follows them through every stage: theory, process and device simulation, cleanroom processing,
